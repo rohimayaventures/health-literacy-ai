@@ -258,11 +258,11 @@ export default function HomePage() {
           className="hero-section"
           style={{
             background: 'var(--hero-bg)',
-            padding: '6rem 2.5rem 0',
+            padding: '3.5rem 2.5rem 0',
             textAlign: 'center',
             position: 'relative',
             overflow: 'hidden',
-            minHeight: '400px',
+            minHeight: '280px',
           }}
         >
           <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
@@ -294,7 +294,7 @@ export default function HomePage() {
                 fontSize: '11px',
                 letterSpacing: '0.14em',
                 color: '#F5C882',
-                marginBottom: '2rem',
+                marginBottom: '1.25rem',
               }}
             >
               <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--accent)', flexShrink: 0 }} />
@@ -323,7 +323,7 @@ export default function HomePage() {
                 fontStyle: 'italic',
                 color: 'var(--accent)',
                 lineHeight: 1.1,
-                margin: '0 0 2rem',
+                margin: '0 0 1.25rem',
                 letterSpacing: '-0.02em',
               }}
             >
@@ -336,7 +336,7 @@ export default function HomePage() {
                 color: 'rgba(240,237,232,0.7)',
                 lineHeight: 1.75,
                 maxWidth: '520px',
-                margin: '0 auto 2rem',
+                margin: '0 auto 1.25rem',
               }}
             >
               Paste the paperwork you got from your doctor, hospital, or lab. We'll explain it in plain words you and your family can understand.
@@ -348,7 +348,7 @@ export default function HomePage() {
                 justifyContent: 'center',
                 gap: '8px',
                 flexWrap: 'wrap',
-                marginBottom: '4rem',
+                marginBottom: '2.5rem',
               }}
             >
               {['Discharge summaries', 'Lab results', 'Radiology reports', 'After-visit notes'].map((pill) => (
