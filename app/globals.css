@@ -317,3 +317,63 @@ textarea {
     flex-direction: column;
   }
 }
+
+/* Skip link (visually hidden; visible on focus) */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 10px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.skip-link:focus-visible {
+  left: 1rem;
+  top: 1rem;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  padding: 0.75rem 1rem;
+  background: var(--surface);
+  color: var(--text-primary);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-md);
+  outline: none;
+}
+
+/* Mobile padding (responsive overrides only; no page.tsx inline changes) */
+@media (max-width: 600px) {
+  header[style*="padding: 0 2rem"],
+  header[style*="padding:0 2rem"] {
+    padding: 0 1rem !important;
+  }
+
+  section[style*="padding: 3rem 2rem 2.5rem"],
+  section[style*="padding:3rem 2rem 2.5rem"] {
+    padding: 1.75rem 1rem 1.5rem !important;
+  }
+
+  main#main-content {
+    padding: 1rem !important;
+  }
+}
+
+/* Mobile chip overflow + contrast */
+@media (max-width: 480px) {
+  .level-chip {
+    white-space: normal;
+  }
+
+  /* Description line (currently 0.65rem + opacity 0.75 inline) */
+  .level-chip span[style*="font-size:0.65rem"],
+  .level-chip span[style*="font-size: 0.65rem"] {
+    font-size: 0.75rem !important;
+  }
+
+  .level-chip span[style*="opacity:0.75"],
+  .level-chip span[style*="opacity: 0.75"] {
+    opacity: 1 !important;
+  }
+}

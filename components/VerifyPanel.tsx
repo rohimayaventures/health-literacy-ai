@@ -71,10 +71,10 @@ export function VerifyPanel({ original, translation, onRetranslate }: VerifyPane
                 marginBottom: '2px',
               }}
             >
-              Did I get everything right?
+              Want a second check?
             </p>
             <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>
-              Run a second check to confirm nothing was omitted from the original.
+              Tap below and we will look again to make sure nothing important was left out.
             </p>
           </div>
           <button
@@ -83,13 +83,15 @@ export function VerifyPanel({ original, translation, onRetranslate }: VerifyPane
             style={{ flexShrink: 0 }}
           >
             <CheckShieldIcon />
-            Verify Translation
+            Check for Missing Info
           </button>
         </div>
       )}
 
       {status === 'loading' && (
         <div
+          role="status"
+          aria-live="polite"
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -99,12 +101,13 @@ export function VerifyPanel({ original, translation, onRetranslate }: VerifyPane
           }}
         >
           <SpinnerIcon />
-          <span className="loading-pulse">Checking for omissions...</span>
+          <span className="loading-pulse">Looking through your document again...</span>
         </div>
       )}
 
       {status === 'error' && (
         <div
+          role="alert"
           style={{
             padding: '0.875rem 1rem',
             background: 'var(--urgent-bg)',
@@ -154,13 +157,10 @@ export function VerifyPanel({ original, translation, onRetranslate }: VerifyPane
                     marginBottom: '2px',
                   }}
                 >
-                  Nothing was left out.
+                  Everything looks complete.
                 </p>
                 <p style={{ fontSize: '0.8125rem', color: 'var(--success)', opacity: 0.8 }}>
-                  All critical information from the original document is present in the translation.
-                  {result.confidence === 'medium' || result.confidence === 'low'
-                    ? ' Note: the document was complex, so there is a small chance of a missed item.'
-                    : ''}
+                  We checked the translation against your original document and did not find anything missing.
                 </p>
               </div>
               <ConfidenceBadge confidence={result.confidence} />
@@ -215,7 +215,7 @@ export function VerifyPanel({ original, translation, onRetranslate }: VerifyPane
                       marginBottom: '0.5rem',
                     }}
                   >
-                    POSSIBLY OMITTED
+                    MAY NEED CHECKING
                   </p>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                     {result.omissions.map((item, i) => (
@@ -236,7 +236,7 @@ export function VerifyPanel({ original, translation, onRetranslate }: VerifyPane
                       marginBottom: '0.5rem',
                     }}
                   >
-                    POSSIBLE INACCURACIES
+                    WORTH REVIEWING
                   </p>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                     {result.inaccuracies.map((item, i) => (
@@ -254,7 +254,7 @@ export function VerifyPanel({ original, translation, onRetranslate }: VerifyPane
                   fontStyle: 'italic',
                 }}
               >
-                This check uses AI and may occasionally flag items that are actually present. Review the translation above to confirm.
+                This is an automated check and may not catch everything. If something seems wrong, compare the translation to the original above.
               </p>
             </div>
           )}
@@ -269,7 +269,7 @@ export function VerifyPanel({ original, translation, onRetranslate }: VerifyPane
               color: 'var(--text-muted)',
             }}
           >
-            Run again
+            Check again
           </button>
         </div>
       )}
@@ -320,6 +320,11 @@ function ConfidenceBadge({ confidence }: { confidence: 'high' | 'medium' | 'low'
     low: { bg: 'var(--surface-2)', text: 'var(--text-secondary)', border: 'var(--border)' },
   }
   const c = colors[confidence]
+  const labelByConfidence: Record<'high' | 'medium' | 'low', string> = {
+    high: 'THOROUGH CHECK',
+    medium: 'PARTIAL CHECK',
+    low: 'QUICK CHECK',
+  }
   return (
     <span
       style={{
@@ -335,7 +340,7 @@ function ConfidenceBadge({ confidence }: { confidence: 'high' | 'medium' | 'low'
         flexShrink: 0,
       }}
     >
-      {confidence.toUpperCase()} CONFIDENCE
+      {labelByConfidence[confidence]}
     </span>
   )
 }

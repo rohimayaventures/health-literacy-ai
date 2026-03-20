@@ -14,6 +14,19 @@ export default function ShareView({ id }: { id: string }) {
       .then((data) => {
         if (data.error) throw new Error(data.error)
         setSession(data)
+        document.documentElement.lang =
+          (
+            {
+              en: 'en',
+              es: 'es',
+              ht: 'ht',
+              pt: 'pt-BR',
+              fr: 'fr',
+              zh: 'zh-Hans',
+              vi: 'vi',
+              tl: 'fil',
+            } as Record<Language, string>
+          )[data.language as Language] ?? 'en'
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false))

@@ -120,7 +120,10 @@ export default function HomePage() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
       setResult(data)
-      setTimeout(() => outputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100)
+      setTimeout(() => {
+        outputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        outputRef.current?.focus()
+      }, 100)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
     } finally {
@@ -293,6 +296,7 @@ export default function HomePage() {
           margin: '0 auto',
           padding: '2rem',
         }}
+        id="main-content"
       >
         {/* Input section */}
         {!result && (
@@ -338,6 +342,14 @@ export default function HomePage() {
                     transition: 'background 0.15s',
                   }}
                   onClick={() => fileInputRef.current?.click()}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      fileInputRef.current?.click()
+                    }
+                  }}
                   onDragOver={(e) => e.preventDefault()}
                   onDrop={(e) => {
                     e.preventDefault()
@@ -497,6 +509,7 @@ export default function HomePage() {
                       key={lvl}
                       className={`level-chip${readingLevel === lvl ? ' active' : ''}`}
                       onClick={() => setReadingLevel(lvl)}
+                      aria-pressed={readingLevel === lvl}
                     >
                       <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1px' }}>
                         <span>{READING_LEVEL_LABELS[lvl]}</span>
@@ -574,7 +587,7 @@ export default function HomePage() {
 
         {/* Output section */}
         {result && (
-          <div ref={outputRef}>
+          <div ref={outputRef} tabIndex={-1}>
             {/* Summary line */}
             <div
               style={{
