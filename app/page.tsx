@@ -5,6 +5,7 @@ import {
   ReadingLevel,
   Language,
   TranslateResponse,
+  LANGUAGES,
   LANGUAGE_LABELS,
   READING_LEVEL_LABELS,
   READING_LEVEL_DESCRIPTIONS,
@@ -13,7 +14,6 @@ import { VerifyPanel } from '@/components/VerifyPanel'
 
 type InputTab = 'paste' | 'upload' | 'voice'
 
-const LANGUAGES: Language[] = ['en', 'es', 'ht', 'pt', 'fr', 'zh', 'vi', 'tl']
 const READING_LEVELS: ReadingLevel[] = ['5th', '8th', 'college']
 
 export default function HomePage() {
@@ -200,92 +200,341 @@ export default function HomePage() {
       {/* Header */}
       <header
         style={{
-          background: 'var(--surface)',
-          borderBottom: '1px solid var(--border)',
+          background: 'var(--hero-bg-dark)',
+          height: '62px',
           padding: '0 2rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
         }}
       >
-        <div
-          style={{
-            maxWidth: '1200px',
-            margin: '0 auto',
-            height: '64px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <div>
-            <div
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '1.5rem',
-                fontWeight: 500,
-                color: 'var(--text-primary)',
-                lineHeight: 1.1,
-              }}
-            >
-              HealthLiteracy AI
-            </div>
-            <div
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.7rem',
-                color: 'var(--text-muted)',
-                letterSpacing: '0.06em',
-                marginTop: '2px',
-              }}
-            >
-              A ROHIMAYA HEALTH AI TOOL
-            </div>
+        <div>
+          <div
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '20px',
+              fontWeight: 400,
+              color: 'var(--hero-text)',
+              lineHeight: 1.1,
+            }}
+          >
+            HealthLiteracy AI
           </div>
           <div
             style={{
-              fontSize: '0.875rem',
-              color: 'var(--text-secondary)',
-              fontStyle: 'italic',
-              fontFamily: 'var(--font-display)',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '9px',
+              letterSpacing: '0.14em',
+              color: 'var(--hero-accent-mid)',
+              marginTop: '2px',
             }}
           >
-            Your medical records, in your language.
+            A HEALTH AI TOOL
           </div>
+        </div>
+        <div
+          className="hero-nav-tagline"
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontStyle: 'italic',
+            fontSize: '13px',
+            color: 'var(--hero-accent)',
+          }}
+        >
+          Your medical records, in your language.
         </div>
       </header>
 
       {/* Hero */}
       {!result && (
         <section
+          className="hero-section"
           style={{
-            borderBottom: '1px solid var(--border)',
-            background: 'var(--surface)',
-            padding: '3rem 2rem 2.5rem',
+            background: 'var(--hero-bg)',
+            padding: '3.5rem 2rem 0',
+            textAlign: 'center',
+            position: 'relative',
+            overflow: 'hidden',
+            minHeight: '320px',
           }}
         >
-          <div style={{ maxWidth: '720px', margin: '0 auto', textAlign: 'center' }}>
+          {/* Decorative rings */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              pointerEvents: 'none',
+            }}
+          >
+            <div
+              style={{
+                position: 'absolute',
+                width: '300px',
+                height: '300px',
+                top: '50%',
+                left: '12%',
+                transform: 'translate(-50%, -50%)',
+                border: '1px solid var(--hero-accent-mid)',
+                borderRadius: '50%',
+                animation: 'hlPulseRing 4s ease-in-out infinite',
+              }}
+            />
+            <div
+              style={{
+                position: 'absolute',
+                width: '480px',
+                height: '480px',
+                top: '50%',
+                left: '12%',
+                transform: 'translate(-50%, -50%)',
+                border: '1px solid var(--hero-accent-mid)',
+                borderRadius: '50%',
+                animation: 'hlPulseRingB 5s ease-in-out infinite 0.8s',
+              }}
+            />
+            <div
+              style={{
+                position: 'absolute',
+                width: '640px',
+                height: '640px',
+                top: '50%',
+                left: '12%',
+                transform: 'translate(-50%, -50%)',
+                border: '1px solid var(--hero-accent-mid)',
+                borderRadius: '50%',
+                animation: 'hlPulseRingC 6s ease-in-out infinite 1.6s',
+              }}
+            />
+            <div
+              style={{
+                position: 'absolute',
+                width: '260px',
+                height: '260px',
+                top: '40%',
+                right: '6%',
+                transform: 'translate(50%, -50%)',
+                border: '1px solid var(--hero-accent-mid)',
+                borderRadius: '50%',
+                animation: 'hlPulseRing 4.5s ease-in-out infinite 1s',
+              }}
+            />
+            <div
+              style={{
+                position: 'absolute',
+                width: '420px',
+                height: '420px',
+                top: '40%',
+                right: '6%',
+                transform: 'translate(50%, -50%)',
+                border: '1px solid var(--hero-accent-mid)',
+                borderRadius: '50%',
+                animation: 'hlPulseRingB 5.5s ease-in-out infinite 2s',
+              }}
+            />
+
+            {/* Floating document shapes */}
+            <div
+              className="hl-doc-a"
+              style={{
+                position: 'absolute',
+                width: '34px',
+                height: '42px',
+                top: '18%',
+                left: '8%',
+                border: '1.5px solid rgba(93,202,165,0.3)',
+                borderRadius: '4px',
+                animation: 'hlFloatA 5s ease-in-out infinite',
+              }}
+            />
+            <div
+              className="hl-doc-b"
+              style={{
+                position: 'absolute',
+                width: '26px',
+                height: '32px',
+                top: '28%',
+                right: '10%',
+                border: '1.5px solid rgba(93,202,165,0.3)',
+                borderRadius: '4px',
+                animation: 'hlFloatB 6.5s ease-in-out infinite 0.5s',
+              }}
+            />
+
+            {/* Dots */}
+            <div
+              style={{
+                position: 'absolute',
+                width: '7px',
+                height: '7px',
+                borderRadius: '50%',
+                background: 'rgba(93,202,165,0.4)',
+                top: '62%',
+                left: '6%',
+                animation: 'hlShimmer 3s ease-in-out infinite',
+              }}
+            />
+            <div
+              style={{
+                position: 'absolute',
+                width: '5px',
+                height: '5px',
+                borderRadius: '50%',
+                background: 'rgba(93,202,165,0.28)',
+                top: '28%',
+                right: '22%',
+                animation: 'hlShimmer 4s ease-in-out infinite 0.8s',
+              }}
+            />
+            <div
+              style={{
+                position: 'absolute',
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                background: 'rgba(194,102,43,0.38)',
+                top: '72%',
+                right: '12%',
+                animation: 'hlShimmer 3.5s ease-in-out infinite 1.2s',
+              }}
+            />
+
+            {/* Cross marks */}
+            <div
+              className="hl-cross hl-cross-a"
+              style={{
+                position: 'absolute',
+                top: '52%',
+                left: '21%',
+                animation: 'hlFloatC 7s ease-in-out infinite',
+              }}
+            />
+            <div
+              className="hl-cross hl-cross-b"
+              style={{
+                position: 'absolute',
+                top: '22%',
+                right: '28%',
+                animation: 'hlFloatA 8s ease-in-out infinite 1s',
+              }}
+            />
+          </div>
+
+          <div
+            style={{
+              position: 'relative',
+              zIndex: 2,
+              animation: 'hlFadeUp 0.6s ease-out both',
+            }}
+          >
+            <div
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '10px',
+                letterSpacing: '0.16em',
+                color: 'var(--hero-accent-mid)',
+                marginBottom: '1.25rem',
+              }}
+            >
+              FREE · NO LOGIN REQUIRED · 12 LANGUAGES
+            </div>
+
             <h1
               style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(2rem, 5vw, 3rem)',
-                fontWeight: 500,
-                color: 'var(--text-primary)',
-                lineHeight: 1.2,
-                marginBottom: '1rem',
+                fontSize: 'clamp(2rem, 5vw, 2.75rem)',
+                fontWeight: 400,
+                color: 'var(--hero-text)',
+                lineHeight: 1.18,
+                marginBottom: '1.2rem',
               }}
             >
-              Understand your medical records.
+              Understand your <em style={{ color: 'var(--hero-accent)', fontStyle: 'italic' }}>medical records.</em>
             </h1>
+
             <p
               style={{
-                fontSize: '1.125rem',
-                color: 'var(--text-secondary)',
-                lineHeight: 1.7,
-                maxWidth: '560px',
-                margin: '0 auto',
+                fontSize: '1rem',
+                color: 'var(--hero-accent)',
+                lineHeight: 1.65,
+                maxWidth: '480px',
+                margin: '0 auto 1.75rem',
               }}
             >
               Paste the paperwork you got from your doctor, hospital, or lab. We'll explain it in plain words you and your family can understand.
             </p>
+
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                gap: '8px',
+                flexWrap: 'wrap',
+                marginBottom: '2.5rem',
+              }}
+            >
+              {['Discharge summaries', 'Lab results', 'Radiology reports', 'After-visit notes'].map((pill) => (
+                <span
+                  key={pill}
+                  style={{
+                    background: 'rgba(93,202,165,0.1)',
+                    border: '1px solid rgba(93,202,165,0.26)',
+                    borderRadius: '999px',
+                    padding: '4px 13px',
+                    fontSize: '11px',
+                    letterSpacing: '0.07em',
+                    color: 'var(--hero-accent)',
+                  }}
+                >
+                  {pill}
+                </span>
+              ))}
+            </div>
           </div>
+
+          <style jsx>{`
+            .hl-doc-a::after,
+            .hl-doc-b::after {
+              content: '';
+              position: absolute;
+              top: 8px;
+              left: 6px;
+              right: 6px;
+              height: 1.5px;
+              background: rgba(93, 202, 165, 0.25);
+              box-shadow: 0 5px 0 rgba(93, 202, 165, 0.18), 0 10px 0 rgba(93, 202, 165, 0.12);
+              border-radius: 1px;
+              pointer-events: none;
+            }
+
+            .hl-cross {
+              width: 12px;
+              height: 12px;
+              pointer-events: none;
+            }
+
+            .hl-cross::before,
+            .hl-cross::after {
+              content: '';
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              background: rgba(93, 202, 165, 0.18);
+              border-radius: 1px;
+              pointer-events: none;
+            }
+
+            .hl-cross::before {
+              width: 12px;
+              height: 1.5px;
+              transform: translate(-50%, -50%);
+            }
+
+            .hl-cross::after {
+              width: 1.5px;
+              height: 12px;
+              transform: translate(-50%, -50%);
+            }
+          `}</style>
         </section>
       )}
 
@@ -297,17 +546,59 @@ export default function HomePage() {
           padding: '2rem',
         }}
         id="main-content"
+        className="main-content"
       >
         {/* Input section */}
         {!result && (
-          <div className="card" style={{ padding: '2rem', marginBottom: '1.5rem' }}>
+          <div
+            className="card-outer-wrap"
+            style={{
+              background: 'var(--hero-bg)',
+              padding: '0 2rem 2.5rem',
+              position: 'relative',
+              zIndex: 2,
+            }}
+          >
+            <div
+              className="card"
+              style={{
+                background: 'var(--surface)',
+                borderRadius: 'var(--radius-lg)',
+                border: '1px solid var(--border)',
+                overflow: 'hidden',
+                padding: '2rem',
+              }}
+            >
             {/* Input tabs */}
-            <div className="tab-bar" style={{ marginBottom: '1.25rem' }}>
+            <div
+              style={{
+                background: 'var(--primary-dark)',
+                display: 'flex',
+                marginBottom: '1.25rem',
+                borderRadius: '12px 12px 0 0',
+                overflow: 'hidden',
+              }}
+            >
               {(['paste', 'upload', 'voice'] as InputTab[]).map((t) => (
                 <button
                   key={t}
-                  className={`tab${tab === t ? ' active' : ''}`}
                   onClick={() => setTab(t)}
+                  style={{
+                    flex: 1,
+                    padding: '13px 0',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '7px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: tab === t ? 'var(--primary-dark)' : 'var(--hero-accent)',
+                    cursor: 'pointer',
+                    border: 'none',
+                    background: tab === t ? 'var(--surface)' : 'transparent',
+                    borderRadius: tab === t ? '12px 12px 0 0' : '0',
+                    fontFamily: 'var(--font-body)',
+                  }}
                 >
                   {t === 'paste' && <PasteIcon />}
                   {t === 'upload' && <UploadIcon />}
@@ -501,19 +792,37 @@ export default function HomePage() {
                     marginBottom: '8px',
                   }}
                 >
-                  READING LEVEL
+                  DETAIL LEVEL
                 </label>
                 <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                   {READING_LEVELS.map((lvl) => (
                     <button
                       key={lvl}
-                      className={`level-chip${readingLevel === lvl ? ' active' : ''}`}
+                      className="level-chip"
                       onClick={() => setReadingLevel(lvl)}
                       aria-pressed={readingLevel === lvl}
+                      style={{
+                        background: readingLevel === lvl ? 'var(--primary-light)' : 'var(--surface)',
+                        border: `1.5px solid ${
+                          readingLevel === lvl ? 'var(--primary)' : 'var(--border-strong)'
+                        }`,
+                        color: readingLevel === lvl ? 'var(--primary-text)' : 'var(--text-primary)',
+                        borderRadius: '999px',
+                        padding: '7px 14px',
+                        fontSize: '12px',
+                        fontWeight: 500,
+                      }}
                     >
-                      <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1px' }}>
+                      <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <span>{READING_LEVEL_LABELS[lvl]}</span>
-                        <span style={{ fontSize: '0.65rem', opacity: 0.75, letterSpacing: '0.02em' }}>
+                        <span
+                          className="level-chip-description"
+                          style={{
+                            fontSize: '9px',
+                            color: readingLevel === lvl ? 'var(--primary)' : 'var(--text-muted)',
+                            marginTop: '1px',
+                          }}
+                        >
                           {READING_LEVEL_DESCRIPTIONS[lvl]}
                         </span>
                       </span>
@@ -541,7 +850,15 @@ export default function HomePage() {
                   id="language-select"
                   value={language}
                   onChange={(e) => setLanguage(e.target.value as Language)}
-                  style={{ maxWidth: '240px' }}
+                  style={{
+                    border: '1.5px solid var(--border-strong)',
+                    borderRadius: 'var(--radius-md)',
+                    padding: '9px 12px',
+                    fontSize: '14px',
+                    color: 'var(--text-primary)',
+                    background: 'var(--surface)',
+                    width: '100%',
+                  }}
                 >
                   {LANGUAGES.map((lang) => (
                     <option key={lang} value={lang}>
@@ -556,7 +873,13 @@ export default function HomePage() {
                 className="btn btn-primary"
                 onClick={handleTranslate}
                 disabled={!hasInput || loading}
-                style={{ flexShrink: 0, padding: '0.75rem 1.75rem', fontSize: '1rem' }}
+                style={{
+                  flexShrink: 0,
+                  border: 'none',
+                  padding: '12px 28px',
+                  fontSize: '1rem',
+                  fontWeight: 500,
+                }}
               >
                 {loading ? (
                   <span className="loading-pulse">Translating...</span>
@@ -582,6 +905,109 @@ export default function HomePage() {
                 {error}
               </div>
             )}
+          </div>
+        </div>
+        )}
+
+        {/* Stats row */}
+        {!result && (
+          <div
+            className="stats-row"
+            style={{
+              background: 'var(--hero-bg-dark)',
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '3rem',
+              padding: '1.75rem 2rem',
+              flexWrap: 'wrap',
+            }}
+          >
+            <div style={{ textAlign: 'center' }}>
+              <div
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '28px',
+                  fontWeight: 400,
+                  color: 'var(--hero-text)',
+                  lineHeight: 1,
+                  textAlign: 'center',
+                }}
+              >
+                88%
+              </div>
+              <div
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '9px',
+                  letterSpacing: '0.09em',
+                  color: 'var(--hero-accent-mid)',
+                  marginTop: '5px',
+                  textAlign: 'center',
+                  maxWidth: '110px',
+                  lineHeight: 1.4,
+                }}
+              >
+                OF ADULTS HAVE LIMITED HEALTH LITERACY
+              </div>
+            </div>
+
+            <div style={{ textAlign: 'center' }}>
+              <div
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '28px',
+                  fontWeight: 400,
+                  color: 'var(--hero-text)',
+                  lineHeight: 1,
+                  textAlign: 'center',
+                }}
+              >
+                12
+              </div>
+              <div
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '9px',
+                  letterSpacing: '0.09em',
+                  color: 'var(--hero-accent-mid)',
+                  marginTop: '5px',
+                  textAlign: 'center',
+                  maxWidth: '110px',
+                  lineHeight: 1.4,
+                }}
+              >
+                LANGUAGES SUPPORTED
+              </div>
+            </div>
+
+            <div style={{ textAlign: 'center' }}>
+              <div
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '28px',
+                  fontWeight: 400,
+                  color: 'var(--hero-text)',
+                  lineHeight: 1,
+                  textAlign: 'center',
+                }}
+              >
+                30%
+              </div>
+              <div
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '9px',
+                  letterSpacing: '0.09em',
+                  color: 'var(--hero-accent-mid)',
+                  marginTop: '5px',
+                  textAlign: 'center',
+                  maxWidth: '110px',
+                  lineHeight: 1.4,
+                }}
+              >
+                LOWER READMISSION WHEN PATIENTS UNDERSTAND
+              </div>
+            </div>
           </div>
         )}
 
@@ -816,30 +1242,73 @@ export default function HomePage() {
       </main>
 
       {/* Footer */}
-      <footer
-        style={{
-          marginTop: '4rem',
-          borderTop: '1px solid var(--border)',
-          padding: '2rem',
-          textAlign: 'center',
-        }}
-      >
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>
-          HealthLiteracy AI is a free tool to help you understand your medical paperwork. It does not provide medical advice.{' '}
-          <span style={{ color: 'var(--text-secondary)' }}>
-            Always follow the instructions of your care team.
+      <footer style={{ marginTop: '4rem' }}>
+        {/* Section A — Emergency bar */}
+        <div
+          style={{
+            background: '#1A1614',
+            borderTop: '1px solid var(--accent)',
+            padding: '10px 2rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+          }}
+        >
+          <span
+            style={{
+              width: '7px',
+              height: '7px',
+              borderRadius: '50%',
+              background: 'var(--accent)',
+              flexShrink: 0,
+            }}
+          />
+          <span style={{ fontSize: '13px', lineHeight: 1.5 }}>
+            <span style={{ fontWeight: 500, color: 'var(--hero-text)' }}>Medical emergency?</span>{' '}
+            <span style={{ color: 'var(--accent-text)' }}>
+              Call 911 immediately. Do not use this tool in an emergency situation.
+            </span>
           </span>
-        </p>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '0.5rem' }}>
-          A{' '}
-          <a
-            href="https://rohimaya.ai"
-            style={{ color: 'var(--primary)', textDecoration: 'none' }}
+        </div>
+
+        {/* Section B — Disclaimer */}
+        <div
+          style={{
+            background: 'var(--hero-bg-dark)',
+            borderTop: '1px solid var(--hero-border-subtle)',
+            padding: '14px 2rem',
+          }}
+        >
+          <p
+            style={{
+              fontSize: '12px',
+              color: 'var(--hero-accent-mid)',
+              lineHeight: 1.6,
+              maxWidth: '800px',
+            }}
           >
-            Rohimaya Health AI
-          </a>{' '}
-          project.
-        </p>
+            HealthLiteracy AI is a free tool to help you understand your medical paperwork. It does not provide
+            medical advice and is not a substitute for the guidance of your care team. Always follow the instructions
+            given to you by your doctor, nurse, or care provider.
+          </p>
+        </div>
+
+        {/* Section C — Bottom strip */}
+        <div
+          style={{
+            background: 'var(--hero-bg-darkest)',
+            borderTop: '1px solid rgba(255,255,255,0.04)',
+            padding: '10px 2rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <span style={{ fontSize: '11px', color: 'rgba(93,202,165,0.4)' }}>Free to use. No account needed.</span>
+          <span style={{ fontSize: '11px', color: 'rgba(93,202,165,0.4)' }}>
+            A Rohimaya Health AI project
+          </span>
+        </div>
       </footer>
     </div>
   )

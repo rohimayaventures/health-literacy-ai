@@ -3,22 +3,30 @@ export type ReadingLevel = '5th' | '8th' | 'college'
 export type Language =
   | 'en'
   | 'es'
-  | 'ht'
-  | 'pt'
-  | 'fr'
   | 'zh'
+  | 'ar'
+  | 'fr'
+  | 'pt'
   | 'vi'
+  | 'ko'
+  | 'hi'
+  | 'ru'
   | 'tl'
+  | 'ja'
 
 export const LANGUAGE_LABELS: Record<Language, string> = {
   en: 'English',
   es: 'Spanish',
-  ht: 'Haitian Creole',
-  pt: 'Portuguese',
-  fr: 'French',
   zh: 'Mandarin (简体)',
+  ar: 'Arabic',
+  fr: 'French',
+  pt: 'Portuguese',
   vi: 'Vietnamese',
+  ko: 'Korean',
+  hi: 'Hindi',
+  ru: 'Russian',
   tl: 'Tagalog',
+  ja: 'Japanese',
 }
 
 export const READING_LEVEL_LABELS: Record<ReadingLevel, string> = {
@@ -32,6 +40,8 @@ export const READING_LEVEL_DESCRIPTIONS: Record<ReadingLevel, string> = {
   '8th': 'Easy to follow, medical terms explained',
   college: 'Full detail, nothing left out',
 }
+
+export const LANGUAGES: Language[] = ['en', 'es', 'zh', 'ar', 'fr', 'pt', 'vi', 'ko', 'hi', 'ru', 'tl', 'ja']
 
 export interface TranslateRequest {
   text: string

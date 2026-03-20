@@ -19,12 +19,16 @@ export default function ShareView({ id }: { id: string }) {
             {
               en: 'en',
               es: 'es',
-              ht: 'ht',
+              ar: 'ar',
               pt: 'pt-BR',
               fr: 'fr',
               zh: 'zh-Hans',
               vi: 'vi',
+              ko: 'ko',
+              hi: 'hi',
+              ru: 'ru',
               tl: 'fil',
+              ja: 'ja',
             } as Record<Language, string>
           )[data.language as Language] ?? 'en'
       })
@@ -52,26 +56,49 @@ export default function ShareView({ id }: { id: string }) {
     <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
       <header
         style={{
-          background: 'var(--surface)',
-          borderBottom: '1px solid var(--border)',
-          padding: '1rem 2rem',
+          background: 'var(--hero-bg-dark)',
+          height: '62px',
+          padding: '0 2rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
         }}
       >
-        <a
-          href="/"
+        <div>
+          <div
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '20px',
+              fontWeight: 400,
+              color: 'var(--hero-text)',
+              lineHeight: 1.1,
+            }}
+          >
+            HealthLiteracy AI
+          </div>
+          <div
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '9px',
+              letterSpacing: '0.14em',
+              color: 'var(--hero-accent-mid)',
+              marginTop: '2px',
+            }}
+          >
+            A HEALTH AI TOOL
+          </div>
+        </div>
+        <div
+          className="hero-nav-tagline"
           style={{
             fontFamily: 'var(--font-display)',
-            fontSize: '1.375rem',
-            fontWeight: 500,
-            color: 'var(--text-primary)',
-            textDecoration: 'none',
+            fontStyle: 'italic',
+            fontSize: '13px',
+            color: 'var(--hero-accent)',
           }}
         >
-          HealthLiteracy AI
-        </a>
-        <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-          Shared plain-language translation
-        </p>
+          Your medical records, in your language.
+        </div>
       </header>
 
       <main style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem' }}>
@@ -146,6 +173,74 @@ export default function ShareView({ id }: { id: string }) {
           This translation is for patient education only. Always follow the instructions of your care team.
         </p>
       </main>
+
+      {/* Footer */}
+      <footer style={{ marginTop: '4rem' }}>
+        {/* Section A — Emergency bar */}
+        <div
+          style={{
+            background: '#1A1614',
+            borderTop: '1px solid var(--accent)',
+            padding: '10px 2rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+          }}
+        >
+          <span
+            style={{
+              width: '7px',
+              height: '7px',
+              borderRadius: '50%',
+              background: 'var(--accent)',
+              flexShrink: 0,
+            }}
+          />
+          <span style={{ fontSize: '13px', lineHeight: 1.5 }}>
+            <span style={{ fontWeight: 500, color: 'var(--hero-text)' }}>Medical emergency?</span>{' '}
+            <span style={{ color: 'var(--accent-text)' }}>
+              Call 911 immediately. Do not use this tool in an emergency situation.
+            </span>
+          </span>
+        </div>
+
+        {/* Section B — Disclaimer */}
+        <div
+          style={{
+            background: 'var(--hero-bg-dark)',
+            borderTop: '1px solid var(--hero-border-subtle)',
+            padding: '14px 2rem',
+          }}
+        >
+          <p
+            style={{
+              fontSize: '12px',
+              color: 'var(--hero-accent-mid)',
+              lineHeight: 1.6,
+              maxWidth: '800px',
+            }}
+          >
+            HealthLiteracy AI is a free tool to help you understand your medical paperwork. It does not provide
+            medical advice and is not a substitute for the guidance of your care team. Always follow the instructions
+            given to you by your doctor, nurse, or care provider.
+          </p>
+        </div>
+
+        {/* Section C — Bottom strip */}
+        <div
+          style={{
+            background: 'var(--hero-bg-darkest)',
+            borderTop: '1px solid rgba(255,255,255,0.04)',
+            padding: '10px 2rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <span style={{ fontSize: '11px', color: 'rgba(93,202,165,0.4)' }}>Free to use. No account needed.</span>
+          <span style={{ fontSize: '11px', color: 'rgba(93,202,165,0.4)' }}>A Rohimaya Health AI project</span>
+        </div>
+      </footer>
     </div>
   )
 }

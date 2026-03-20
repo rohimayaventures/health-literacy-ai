@@ -19,12 +19,16 @@ READING LEVEL INSTRUCTIONS:
 TRANSLATION LANGUAGE CODES:
 - en: English
 - es: Spanish
-- ht: Haitian Creole (Kreyol ayisyen)
-- pt: Portuguese (Brazilian)
-- fr: French
 - zh: Mandarin Chinese (Simplified)
+- ar: Arabic
+- fr: French
+- pt: Portuguese (Brazilian)
 - vi: Vietnamese
+- ko: Korean
+- hi: Hindi
+- ru: Russian
 - tl: Tagalog
+- ja: Japanese
 
 If the language is not English, write the entire translation (including urgentItems and summaryLine) in the target language.
 

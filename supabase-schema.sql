@@ -9,7 +9,7 @@ create table if not exists sessions (
   urgent_items text[] not null default '{}',
   summary_line text not null default '',
   reading_level text not null check (reading_level in ('5th', '8th', 'college')),
-  language text not null check (language in ('en', 'es', 'ht', 'pt', 'fr', 'zh', 'vi', 'tl')),
+  language text not null check (language in ('en', 'es', 'zh', 'ar', 'fr', 'pt', 'vi', 'ko', 'hi', 'ru', 'tl', 'ja')),
   created_at timestamptz not null default now()
 );
 
