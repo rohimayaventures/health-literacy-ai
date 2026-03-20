@@ -208,32 +208,31 @@ export default function HomePage() {
           justifyContent: 'space-between',
         }}
       >
-        <div>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div
+            style={{
+              width: '3px',
+              height: '36px',
+              background: 'var(--hero-accent-mid)',
+              borderRadius: '2px',
+              flexShrink: 0,
+              marginRight: '12px',
+            }}
+          />
           <div
             style={{
               fontFamily: 'var(--font-display)',
-              fontSize: '20px',
+              fontSize: '21px',
               fontWeight: 400,
               color: 'var(--hero-text)',
               lineHeight: 1.1,
             }}
           >
-            HealthLiteracy AI
-          </div>
-          <div
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '9px',
-              letterSpacing: '0.14em',
-              color: 'var(--hero-accent-mid)',
-              marginTop: '2px',
-            }}
-          >
-            A HEALTH AI TOOL
+            HealthLiteracy <span style={{ color: 'var(--hero-accent-mid)', fontStyle: 'italic' }}>AI</span>
           </div>
         </div>
         <div
-          className="hero-nav-tagline"
+          className="nav-tagline"
           style={{
             fontFamily: 'var(--font-display)',
             fontStyle: 'italic',
@@ -538,16 +537,17 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* Main */}
-      <main
-        style={{
-          maxWidth: '1200px',
-          margin: '0 auto',
-          padding: '2rem',
-        }}
-        id="main-content"
-        className="main-content"
-      >
+      <div style={{ background: 'var(--hero-bg-dark)' }}>
+        {/* Main */}
+        <main
+          style={{
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '2rem',
+          }}
+          id="main-content"
+          className="main-content"
+        >
         {/* Input section */}
         {!result && (
           <div
@@ -573,10 +573,10 @@ export default function HomePage() {
             <div
               style={{
                 background: 'var(--primary-dark)',
+                padding: '10px 12px',
                 display: 'flex',
+                gap: '8px',
                 marginBottom: '1.25rem',
-                borderRadius: '12px 12px 0 0',
-                overflow: 'hidden',
               }}
             >
               {(['paste', 'upload', 'voice'] as InputTab[]).map((t) => (
@@ -585,19 +585,20 @@ export default function HomePage() {
                   onClick={() => setTab(t)}
                   style={{
                     flex: 1,
-                    padding: '13px 0',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: '7px',
+                    gap: '6px',
+                    padding: '9px 12px',
+                    borderRadius: '999px',
                     fontSize: '13px',
                     fontWeight: 500,
-                    color: tab === t ? 'var(--primary-dark)' : 'var(--hero-accent)',
+                    border: '1px solid transparent',
                     cursor: 'pointer',
-                    border: 'none',
-                    background: tab === t ? 'var(--surface)' : 'transparent',
-                    borderRadius: tab === t ? '12px 12px 0 0' : '0',
                     fontFamily: 'var(--font-body)',
+                    borderColor: tab === t ? 'rgba(255,255,255,0.2)' : 'transparent',
+                    background: tab === t ? 'var(--surface)' : 'transparent',
+                    color: tab === t ? 'var(--primary-dark)' : 'rgba(159,225,203,0.75)',
                   }}
                 >
                   {t === 'paste' && <PasteIcon />}
@@ -1239,77 +1240,78 @@ export default function HomePage() {
             </p>
           </div>
         )}
-      </main>
+        </main>
 
-      {/* Footer */}
-      <footer style={{ marginTop: '4rem' }}>
-        {/* Section A — Emergency bar */}
-        <div
-          style={{
-            background: '#1A1614',
-            borderTop: '1px solid var(--accent)',
-            padding: '10px 2rem',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-          }}
-        >
-          <span
+        {/* Footer */}
+        <footer style={{ marginTop: '4rem' }}>
+          {/* Section A — Emergency bar */}
+          <div
             style={{
-              width: '7px',
-              height: '7px',
-              borderRadius: '50%',
-              background: 'var(--accent)',
-              flexShrink: 0,
-            }}
-          />
-          <span style={{ fontSize: '13px', lineHeight: 1.5 }}>
-            <span style={{ fontWeight: 500, color: 'var(--hero-text)' }}>Medical emergency?</span>{' '}
-            <span style={{ color: 'var(--accent-text)' }}>
-              Call 911 immediately. Do not use this tool in an emergency situation.
-            </span>
-          </span>
-        </div>
-
-        {/* Section B — Disclaimer */}
-        <div
-          style={{
-            background: 'var(--hero-bg-dark)',
-            borderTop: '1px solid var(--hero-border-subtle)',
-            padding: '14px 2rem',
-          }}
-        >
-          <p
-            style={{
-              fontSize: '12px',
-              color: 'var(--hero-accent-mid)',
-              lineHeight: 1.6,
-              maxWidth: '800px',
+              background: '#1A1614',
+              borderTop: '1px solid var(--accent)',
+              padding: '10px 2rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
             }}
           >
-            HealthLiteracy AI is a free tool to help you understand your medical paperwork. It does not provide
-            medical advice and is not a substitute for the guidance of your care team. Always follow the instructions
-            given to you by your doctor, nurse, or care provider.
-          </p>
-        </div>
+            <span
+              style={{
+                width: '7px',
+                height: '7px',
+                borderRadius: '50%',
+                background: 'var(--accent)',
+                flexShrink: 0,
+              }}
+            />
+            <span style={{ fontSize: '13px', lineHeight: 1.5 }}>
+              <span style={{ fontWeight: 500, color: 'var(--hero-text)' }}>Medical emergency?</span>{' '}
+              <span style={{ color: 'var(--accent-text)' }}>
+                Call 911 immediately. Do not use this tool in an emergency situation.
+              </span>
+            </span>
+          </div>
 
-        {/* Section C — Bottom strip */}
-        <div
-          style={{
-            background: 'var(--hero-bg-darkest)',
-            borderTop: '1px solid rgba(255,255,255,0.04)',
-            padding: '10px 2rem',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <span style={{ fontSize: '11px', color: 'rgba(93,202,165,0.4)' }}>Free to use. No account needed.</span>
-          <span style={{ fontSize: '11px', color: 'rgba(93,202,165,0.4)' }}>
-            A Rohimaya Health AI project
-          </span>
-        </div>
-      </footer>
+          {/* Section B — Disclaimer */}
+          <div
+            style={{
+              background: 'var(--hero-bg-dark)',
+              borderTop: '1px solid var(--hero-border-subtle)',
+              padding: '14px 2rem',
+            }}
+          >
+            <p
+              style={{
+                fontSize: '12px',
+                color: 'var(--hero-accent-mid)',
+                lineHeight: 1.6,
+                maxWidth: '800px',
+              }}
+            >
+              HealthLiteracy AI is a free tool to help you understand your medical paperwork. It does not provide
+              medical advice and is not a substitute for the guidance of your care team. Always follow the instructions
+              given to you by your doctor, nurse, or care provider.
+            </p>
+          </div>
+
+          {/* Section C — Bottom strip */}
+          <div
+            style={{
+              background: 'var(--hero-bg-darkest)',
+              borderTop: '1px solid rgba(255,255,255,0.04)',
+              padding: '10px 2rem',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <span style={{ fontSize: '11px', color: 'rgba(93,202,165,0.4)' }}>Free to use. No account needed.</span>
+            <span style={{ fontSize: '11px', color: 'rgba(93,202,165,0.4)' }}>
+              A Rohimaya Health AI project
+            </span>
+          </div>
+        </footer>
+      </div>
     </div>
   )
 }

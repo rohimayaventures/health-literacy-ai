@@ -420,6 +420,10 @@ textarea {
     display: none;
   }
 
+  .nav-tagline {
+    display: none;
+  }
+
   .stats-row {
     flex-direction: column;
     gap: 1.5rem !important;
