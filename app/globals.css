@@ -295,12 +295,12 @@ textarea {
 
 /* HealthLiteracy hero animations */
 @keyframes hlPulseRing {
-  0%, 100% { opacity: 0.1; transform: translate(-50%, -50%) scale(1); }
-  50% { opacity: 0.2; transform: translate(-50%, -50%) scale(1.05); }
+  0%, 100% { opacity: 0.08; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.22; transform: translate(-50%, -50%) scale(1.08); }
 }
 @keyframes hlPulseRingB {
-  0%, 100% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
-  50% { opacity: 0.1; transform: translate(-50%, -50%) scale(1.07); }
+  0%, 100% { opacity: 0.04; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.15; transform: translate(-50%, -50%) scale(1.1); }
 }
 @keyframes hlShimmer {
   0%, 100% { opacity: 0.2; }
@@ -413,7 +413,7 @@ textarea {
 
 @media (max-width: 600px) {
   .nav-tagline { display: none; }
-  .hero-section { padding: 4rem 1.25rem 0; }
+  .hero-section { padding: 2rem 1rem 0 !important; min-height: 190px !important; }
   .card-outer-wrap { padding: 0 1.25rem 2rem; }
   .stats-row { flex-direction: column; gap: 2rem; padding: 2.5rem 1.25rem; }
   .stat:not(:last-child)::after { display: none; }

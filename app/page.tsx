@@ -258,17 +258,17 @@ export default function HomePage() {
           className="hero-section"
           style={{
             background: 'var(--hero-bg)',
-            padding: '3.5rem 2.5rem 0',
+            padding: '2.25rem 2.5rem 0',
             textAlign: 'center',
             position: 'relative',
             overflow: 'hidden',
-            minHeight: '280px',
+            minHeight: '230px',
           }}
         >
           <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
-            <div style={{ position: 'absolute', width: '360px', height: '360px', top: '50%', left: '50%', border: '1px solid var(--hero-border-ring)', borderRadius: '50%', transform: 'translate(-50%, -50%)', animation: 'hlPulseRing 4s ease-in-out infinite' }} />
-            <div style={{ position: 'absolute', width: '580px', height: '580px', top: '50%', left: '50%', border: '1px solid var(--hero-border-ring)', borderRadius: '50%', transform: 'translate(-50%, -50%)', animation: 'hlPulseRingB 5.5s ease-in-out infinite 0.8s' }} />
-            <div style={{ position: 'absolute', width: '800px', height: '800px', top: '50%', left: '50%', border: '1px solid var(--hero-border-ring)', borderRadius: '50%', transform: 'translate(-50%, -50%)', animation: 'hlPulseRingB 7s ease-in-out infinite 1.6s' }} />
+            <div style={{ position: 'absolute', width: '300px', height: '300px', top: '50%', left: '50%', border: '1px solid var(--hero-border-ring)', borderRadius: '50%', transform: 'translate(-50%, -50%)', animation: 'hlPulseRing 3.6s ease-in-out infinite', willChange: 'transform, opacity' }} />
+            <div style={{ position: 'absolute', width: '500px', height: '500px', top: '50%', left: '50%', border: '1px solid var(--hero-border-ring)', borderRadius: '50%', transform: 'translate(-50%, -50%)', animation: 'hlPulseRingB 5s ease-in-out infinite 0.6s', willChange: 'transform, opacity' }} />
+            <div style={{ position: 'absolute', width: '700px', height: '700px', top: '50%', left: '50%', border: '1px solid var(--hero-border-ring)', borderRadius: '50%', transform: 'translate(-50%, -50%)', animation: 'hlPulseRingB 6.4s ease-in-out infinite 1.2s', willChange: 'transform, opacity' }} />
             <div style={{ position: 'absolute', width: '7px', height: '7px', borderRadius: '50%', background: 'var(--accent)', top: '22%', left: '12%', animation: 'hlShimmer 3s ease-in-out infinite', opacity: 0.5 }} />
             <div style={{ position: 'absolute', width: '5px', height: '5px', borderRadius: '50%', background: 'var(--accent)', top: '58%', left: '8%', animation: 'hlShimmer 4s ease-in-out infinite 0.8s', opacity: 0.3 }} />
             <div style={{ position: 'absolute', width: '6px', height: '6px', borderRadius: '50%', background: 'var(--accent)', top: '28%', right: '10%', animation: 'hlShimmer 3.5s ease-in-out infinite 1.2s', opacity: 0.4 }} />
@@ -294,7 +294,7 @@ export default function HomePage() {
                 fontSize: '11px',
                 letterSpacing: '0.14em',
                 color: '#F5C882',
-                marginBottom: '1.25rem',
+                marginBottom: '1rem',
               }}
             >
               <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--accent)', flexShrink: 0 }} />
@@ -323,7 +323,7 @@ export default function HomePage() {
                 fontStyle: 'italic',
                 color: 'var(--accent)',
                 lineHeight: 1.1,
-                margin: '0 0 1.25rem',
+                margin: '0 0 1rem',
                 letterSpacing: '-0.02em',
               }}
             >
@@ -336,7 +336,7 @@ export default function HomePage() {
                 color: 'rgba(240,237,232,0.7)',
                 lineHeight: 1.75,
                 maxWidth: '520px',
-                margin: '0 auto 1.25rem',
+                margin: '0 auto 1rem',
               }}
             >
               Paste the paperwork you got from your doctor, hospital, or lab. We'll explain it in plain words you and your family can understand.
@@ -348,7 +348,7 @@ export default function HomePage() {
                 justifyContent: 'center',
                 gap: '8px',
                 flexWrap: 'wrap',
-                marginBottom: '2.5rem',
+                marginBottom: '1.25rem',
               }}
             >
               {['Discharge summaries', 'Lab results', 'Radiology reports', 'After-visit notes'].map((pill) => (
