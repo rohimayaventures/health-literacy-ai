@@ -80,7 +80,14 @@ export function VerifyPanel({ original, translation, onRetranslate }: VerifyPane
           <button
             className="btn btn-secondary"
             onClick={runVerify}
-            style={{ flexShrink: 0 }}
+            style={{
+              flexShrink: 0,
+              border: '1.5px solid var(--accent)',
+              backgroundColor: 'transparent',
+              color: 'var(--accent)',
+              borderRadius: 'var(--radius-md)',
+              padding: '0.625rem 1.25rem',
+            }}
           >
             <CheckShieldIcon />
             Check for Missing Info
@@ -98,6 +105,9 @@ export function VerifyPanel({ original, translation, onRetranslate }: VerifyPane
             gap: '10px',
             color: 'var(--text-secondary)',
             fontSize: '0.9375rem',
+            background: 'var(--surface-2)',
+            padding: '0.875rem 1rem',
+            borderRadius: 'var(--radius-md)',
           }}
         >
           <SpinnerIcon />
@@ -260,13 +270,16 @@ export function VerifyPanel({ original, translation, onRetranslate }: VerifyPane
           )}
 
           <button
-            className="btn btn-ghost"
+            className="btn btn-secondary"
             onClick={() => { setStatus('idle'); setResult(null) }}
             style={{
-              fontSize: '0.8125rem',
-              padding: '0.375rem 0',
+              border: '1.5px solid var(--accent)',
+              backgroundColor: 'transparent',
+              color: 'var(--accent)',
+              borderRadius: 'var(--radius-md)',
+              padding: '0.625rem 1.25rem',
+              fontSize: '0.875rem',
               marginTop: '0.75rem',
-              color: 'var(--text-muted)',
             }}
           >
             Check again

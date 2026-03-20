@@ -76,62 +76,56 @@ export default function ShareView({ id }: { id: string }) {
     <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
       <header
         style={{
-          background: 'var(--hero-bg-dark)',
-          height: '62px',
-          padding: '0 2rem',
+          background: 'var(--hero-bg)',
+          borderBottom: '1px solid var(--hero-border-subtle)',
+          height: '68px',
+          padding: '0 2.5rem',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-start',
         }}
       >
-        <div>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div
+            style={{
+              width: '3px',
+              height: '40px',
+              background: 'var(--accent)',
+              borderRadius: '2px',
+              flexShrink: 0,
+              marginRight: '12px',
+            }}
+          />
           <div
             style={{
               fontFamily: 'var(--font-display)',
-              fontSize: '20px',
+              fontSize: '22px',
               fontWeight: 400,
               color: 'var(--hero-text)',
               lineHeight: 1.1,
             }}
           >
-            HealthLiteracy AI
+            HealthLiteracy <span style={{ color: 'var(--accent)', fontStyle: 'italic' }}>AI</span>
           </div>
-          <div
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '9px',
-              letterSpacing: '0.14em',
-              color: 'var(--hero-accent-mid)',
-              marginTop: '2px',
-            }}
-          >
-            A HEALTH AI TOOL
-          </div>
-        </div>
-        <div
-          className="hero-nav-tagline"
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontStyle: 'italic',
-            fontSize: '13px',
-            color: 'var(--hero-accent)',
-          }}
-        >
-          Your medical records, in your language.
         </div>
       </header>
 
       <main style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem' }}>
         <div
           style={{
-            background: 'var(--primary-light)',
-            border: '1px solid var(--primary)',
+            background: 'var(--accent-light)',
+            border: '1px solid rgba(212,136,42,0.4)',
+            borderLeft: '3px solid var(--accent)',
             borderRadius: 'var(--radius-md)',
             padding: '1rem 1.25rem',
             marginBottom: '1.5rem',
+            display: 'flex',
+            gap: '10px',
+            alignItems: 'flex-start',
           }}
         >
-          <p style={{ color: 'var(--primary-text)', fontWeight: 500, lineHeight: 1.5 }}>
+          <span style={{ color: 'var(--accent)', fontSize: '18px', lineHeight: 1 }}>✓</span>
+          <p style={{ color: 'var(--accent-text)', fontWeight: 500, lineHeight: 1.5 }}>
             {session.summaryLine}
           </p>
         </div>
@@ -141,9 +135,14 @@ export default function ShareView({ id }: { id: string }) {
             <p
               style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: '0.7rem',
-                letterSpacing: '0.08em',
-                color: 'var(--urgent-text)',
+                fontSize: '9px',
+                letterSpacing: '0.1em',
+                color: 'var(--accent-text)',
+                background: 'var(--accent-light)',
+                border: '1px solid rgba(212,136,42,0.3)',
+                borderRadius: '4px',
+                padding: '2px 8px',
+                display: 'inline-block',
                 marginBottom: '0.75rem',
               }}
             >
@@ -160,13 +159,13 @@ export default function ShareView({ id }: { id: string }) {
           </div>
         )}
 
-        <div className="card" style={{ padding: '1.75rem', marginBottom: '1rem' }}>
+        <div className="card results-panels" style={{ padding: '1.75rem', marginBottom: '1rem', border: '2px solid var(--accent)' }}>
           <p
             style={{
               fontFamily: 'var(--font-mono)',
-              fontSize: '0.7rem',
-              letterSpacing: '0.08em',
-              color: 'var(--primary)',
+              fontSize: '9px',
+              letterSpacing: '0.1em',
+              color: 'var(--accent)',
               marginBottom: '1.25rem',
             }}
           >
@@ -176,7 +175,7 @@ export default function ShareView({ id }: { id: string }) {
           </p>
           <div className="translation-content">
             {session.translation.split('\n\n').map((para, i) => (
-              <p key={i} style={{ fontSize: '1rem', color: 'var(--text-primary)', lineHeight: 1.75 }}>
+              <p key={i} style={{ fontSize: '0.9375rem', color: 'var(--text-primary)', lineHeight: 1.75 }}>
                 {para}
               </p>
             ))}
@@ -205,27 +204,35 @@ export default function ShareView({ id }: { id: string }) {
       <footer style={{ marginTop: '4rem' }}>
         {/* Section A — Emergency bar */}
         <div
+          className="footer-emergency"
           style={{
-            background: '#1A1614',
-            borderTop: '1px solid var(--accent)',
-            padding: '10px 2rem',
+            background: 'var(--hero-bg)',
+            borderTop: '2px solid var(--accent)',
+            padding: '14px 2.5rem',
             display: 'flex',
             alignItems: 'center',
-            gap: '10px',
+            gap: '12px',
+            flexWrap: 'wrap',
           }}
         >
-          <span
+          <div
             style={{
-              width: '7px',
-              height: '7px',
+              width: '30px',
+              height: '30px',
               borderRadius: '50%',
-              background: 'var(--accent)',
+              background: 'rgba(212,136,42,0.15)',
+              border: '1px solid rgba(212,136,42,0.4)',
               flexShrink: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
-          />
+          >
+            <AlertIcon />
+          </div>
           <span style={{ fontSize: '13px', lineHeight: 1.5 }}>
-            <span style={{ fontWeight: 500, color: 'var(--hero-text)' }}>Medical emergency?</span>{' '}
-            <span style={{ color: 'var(--accent-text)' }}>
+            <span style={{ fontWeight: 600, color: '#FFFFFF' }}>Medical emergency?</span>{' '}
+            <span style={{ color: 'rgba(240,237,232,0.85)' }}>
               Call 911 immediately. Do not use this tool in an emergency situation.
             </span>
           </span>
@@ -233,17 +240,18 @@ export default function ShareView({ id }: { id: string }) {
 
         {/* Section B — Disclaimer */}
         <div
+          className="footer-disclaimer"
           style={{
-            background: 'var(--hero-bg-dark)',
-            borderTop: '1px solid var(--hero-border-subtle)',
-            padding: '14px 2rem',
+            background: 'var(--hero-bg-mid)',
+            borderTop: '1px solid rgba(255,255,255,0.08)',
+            padding: '16px 2.5rem',
           }}
         >
           <p
             style={{
-              fontSize: '12px',
-              color: 'var(--hero-accent-mid)',
-              lineHeight: 1.6,
+              fontSize: '12.5px',
+              color: 'rgba(240,237,232,0.6)',
+              lineHeight: 1.7,
               maxWidth: '800px',
             }}
           >
@@ -255,17 +263,21 @@ export default function ShareView({ id }: { id: string }) {
 
         {/* Section C — Bottom strip */}
         <div
+          className="footer-bottom"
           style={{
-            background: 'var(--hero-bg-darkest)',
-            borderTop: '1px solid rgba(255,255,255,0.04)',
-            padding: '10px 2rem',
+            background: 'var(--hero-bg-dark)',
+            borderTop: '1px solid rgba(255,255,255,0.08)',
+            padding: '13px 2.5rem',
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '8px',
           }}
         >
-          <span style={{ fontSize: '11px', color: 'rgba(93,202,165,0.4)' }}>Free to use. No account needed.</span>
-          <span style={{ fontSize: '11px', color: 'rgba(93,202,165,0.4)' }}>A Rohimaya Health AI project</span>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'rgba(212,136,42,0.8)', letterSpacing: '0.06em', fontWeight: 500 }}>
+            FREE TO USE · NO ACCOUNT NEEDED
+          </span>
+          <span style={{ fontSize: '12px', color: 'rgba(240,237,232,0.55)' }}>A Rohimaya Health AI project</span>
         </div>
       </footer>
     </div>
@@ -277,6 +289,16 @@ function DownloadIcon() {
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
       <path d="M8 2v8M5 11l3 3 3-3" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round"/>
       <path d="M3 13h10" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round"/>
+    </svg>
+  )
+}
+
+function AlertIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+      <path d="M8 2.2L14 13H2L8 2.2Z" stroke="var(--accent)" strokeWidth="1.25" strokeLinejoin="round" />
+      <path d="M8 6v3.2" stroke="var(--accent)" strokeWidth="1.25" strokeLinecap="round" />
+      <circle cx="8" cy="11.2" r="0.7" fill="var(--accent)" />
     </svg>
   )
 }

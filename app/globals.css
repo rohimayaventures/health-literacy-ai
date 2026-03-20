@@ -1,39 +1,41 @@
 @import 'tailwindcss';
 
 :root {
-  --bg: #FAFAF8;
-  --surface: #FFFFFF;
-  --surface-2: #F4F1EC;
-  --border: #E4E0D8;
-  --border-strong: #C8C4BB;
+  --bg: #F4EFE6;
+  --surface: #FAFAF8;
+  --surface-2: #EDE7DC;
+  --border: #E8E1D5;
+  --border-strong: #C8BCA8;
 
   --hero-bg: #0F3D34;
-  --hero-bg-dark: #0A2E28;
-  --hero-bg-darkest: #071F1B;
-  --hero-text: #F5F0E8;
-  --hero-accent: #9FE1CB;
-  --hero-accent-mid: #5DCAA5;
-  --hero-border-subtle: rgba(255,255,255,0.06);
+  --hero-bg-mid: #0A2218;
+  --hero-bg-dark: #071510;
+  --hero-text: #F0EDE8;
+  --hero-accent: #F5C882;
+  --hero-accent-mid: #D4882A;
+  --hero-border-subtle: rgba(212,136,42,0.2);
+  --hero-border-ring: rgba(212,136,42,0.5);
 
-  --primary: #2C7A6E;
-  --primary-hover: #245E54;
+  --primary: #0F3D34;
+  --primary-hover: #0A2218;
   --primary-light: #E8F4F1;
   --primary-text: #1A4D46;
   --primary-dark: #1A4D46;
 
-  --accent: #C2662B;
-  --accent-hover: #A8541F;
-  --accent-light: #FAF0E8;
-  --accent-text: #F5C5A8;
+  --accent: #D4882A;
+  --accent-hover: #B8721F;
+  --accent-light: #FEF3E2;
+  --accent-text: #8B4A0A;
 
-  --text-primary: #1A1614;
-  --text-secondary: #5C5650;
+  --text-primary: #1A1410;
+  --text-secondary: #6B6159;
   --text-muted: #9E9890;
 
-  --urgent-bg: #FDF4F0;
-  --urgent-border: #F5C5A8;
-  --urgent-text: #8B3A1A;
-  --urgent-icon: #C2662B;
+  --urgent-bg: #FEF3E2;
+  --urgent-border: rgba(212,136,42,0.35);
+  --urgent-border-left: #D4882A;
+  --urgent-text: #8B4A0A;
+  --urgent-icon: #D4882A;
 
   --warning-bg: #FFF8EC;
   --warning-border: #F5D9A0;
@@ -52,8 +54,8 @@
   --font-body: 'DM Sans', system-ui, sans-serif;
   --font-mono: 'DM Mono', 'Courier New', monospace;
 
-  --shadow-card: 0 1px 3px rgba(26,22,20,0.06), 0 1px 2px rgba(26,22,20,0.04);
-  --shadow-float: 0 4px 16px rgba(26,22,20,0.08), 0 2px 6px rgba(26,22,20,0.05);
+  --shadow-card: 0 20px 60px rgba(0,0,0,0.4);
+  --shadow-sm: 0 1px 3px rgba(26,20,16,0.08);
 }
 
 * {
@@ -293,35 +295,19 @@ textarea {
 
 /* HealthLiteracy hero animations */
 @keyframes hlPulseRing {
-  0%, 100% { opacity: 0.16; transform: scale(1); }
-  50% { opacity: 0.28; transform: scale(1.04); }
+  0%, 100% { opacity: 0.1; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.2; transform: translate(-50%, -50%) scale(1.05); }
 }
 @keyframes hlPulseRingB {
-  0%, 100% { opacity: 0.08; transform: scale(1); }
-  50% { opacity: 0.18; transform: scale(1.06); }
-}
-@keyframes hlPulseRingC {
-  0%, 100% { opacity: 0.05; transform: scale(1); }
-  50% { opacity: 0.12; transform: scale(1.08); }
-}
-@keyframes hlFloatA {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-12px) rotate(3deg); }
-}
-@keyframes hlFloatB {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-9px) rotate(-3deg); }
-}
-@keyframes hlFloatC {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-16px); }
+  0%, 100% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.1; transform: translate(-50%, -50%) scale(1.07); }
 }
 @keyframes hlShimmer {
-  0%, 100% { opacity: 0.35; }
-  50% { opacity: 0.65; }
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.5; }
 }
 @keyframes hlFadeUp {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -333,6 +319,16 @@ textarea {
 
 .translation-content p:last-child {
   margin-bottom: 0;
+}
+
+.stat:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 5%;
+  height: 90%;
+  width: 1px;
+  background: var(--border-strong);
 }
 
 /* Scrollbar */
@@ -416,42 +412,24 @@ textarea {
 }
 
 @media (max-width: 600px) {
-  .hero-nav-tagline {
-    display: none;
-  }
-
-  .nav-tagline {
-    display: none;
-  }
-
-  .stats-row {
-    flex-direction: column;
-    gap: 1.5rem !important;
-    padding: 1.5rem 1rem !important;
-  }
-
-  .hero-section {
-    padding: 2rem 1rem 0 !important;
-  }
-
-  .card-outer-wrap {
-    padding: 0 1rem 1.5rem !important;
-  }
-
-  .main-content {
-    padding: 1rem !important;
-  }
+  .nav-tagline { display: none; }
+  .hero-section { padding: 4rem 1.25rem 0; }
+  .card-outer-wrap { padding: 0 1.25rem 2rem; }
+  .stats-row { flex-direction: column; gap: 2rem; padding: 2.5rem 1.25rem; }
+  .stat:not(:last-child)::after { display: none; }
+  .trust-cards-row { flex-direction: column; }
+  .results-panels { flex-direction: column; }
+  .actions-row { flex-direction: column; align-items: stretch; }
+  .actions-left { flex-direction: column; }
 }
 
 @media print {
-  header, nav, .tab-bar, .btn, button, footer,
-  .emergency-bar, .disclaimer-bar, .footer-bottom,
-  .stats-row, .hero-section, .card-outer-wrap { display: none !important; }
-
-  body { background: white; color: #1A1614; font-family: Georgia, serif; }
-
-  .translation-content { display: block !important; }
+  header, nav, .tab-band-outer, .card-outer-wrap,
+  .hero-section, .stats-row, .trust-section,
+  .footer-emergency, .footer-disclaimer, .footer-bottom,
+  .verify-section, .actions-row, button { display: none !important; }
+  body { background: white; color: #1A1410; }
+  .results-panels { flex-direction: column; }
   .translation-content p { font-size: 13pt; line-height: 1.7; margin-bottom: 12pt; }
-
-  .urgent-card { border: 1px solid #F5C5A8; padding: 8pt; margin-bottom: 8pt; page-break-inside: avoid; }
+  .urgent-card { border: 1px solid #D4882A; padding: 8pt; margin-bottom: 8pt; }
 }

@@ -218,20 +218,21 @@ export default function HomePage() {
       {/* Header */}
       <header
         style={{
-          background: 'var(--hero-bg-dark)',
-          height: '62px',
-          padding: '0 2rem',
+          background: 'var(--hero-bg)',
+          borderBottom: '1px solid var(--hero-border-subtle)',
+          height: '68px',
+          padding: '0 2.5rem',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-start',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <div
             style={{
               width: '3px',
-              height: '36px',
-              background: 'var(--hero-accent-mid)',
+              height: '40px',
+              background: 'var(--accent)',
               borderRadius: '2px',
               flexShrink: 0,
               marginRight: '12px',
@@ -249,17 +250,6 @@ export default function HomePage() {
             HealthLiteracy <span style={{ color: 'var(--hero-accent-mid)', fontStyle: 'italic' }}>AI</span>
           </div>
         </div>
-        <div
-          className="nav-tagline"
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontStyle: 'italic',
-            fontSize: '13px',
-            color: 'var(--hero-accent)',
-          }}
-        >
-          Your medical records, in your language.
-        </div>
       </header>
 
       {/* Hero */}
@@ -268,213 +258,85 @@ export default function HomePage() {
           className="hero-section"
           style={{
             background: 'var(--hero-bg)',
-            padding: '3.5rem 2rem 0',
+            padding: '6rem 2.5rem 0',
             textAlign: 'center',
             position: 'relative',
             overflow: 'hidden',
-            minHeight: '320px',
+            minHeight: '400px',
           }}
         >
-          {/* Decorative rings */}
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              pointerEvents: 'none',
-            }}
-          >
-            <div
-              style={{
-                position: 'absolute',
-                width: '300px',
-                height: '300px',
-                top: '50%',
-                left: '12%',
-                transform: 'translate(-50%, -50%)',
-                border: '1px solid var(--hero-accent-mid)',
-                borderRadius: '50%',
-                animation: 'hlPulseRing 4s ease-in-out infinite',
-              }}
-            />
-            <div
-              style={{
-                position: 'absolute',
-                width: '480px',
-                height: '480px',
-                top: '50%',
-                left: '12%',
-                transform: 'translate(-50%, -50%)',
-                border: '1px solid var(--hero-accent-mid)',
-                borderRadius: '50%',
-                animation: 'hlPulseRingB 5s ease-in-out infinite 0.8s',
-              }}
-            />
-            <div
-              style={{
-                position: 'absolute',
-                width: '640px',
-                height: '640px',
-                top: '50%',
-                left: '12%',
-                transform: 'translate(-50%, -50%)',
-                border: '1px solid var(--hero-accent-mid)',
-                borderRadius: '50%',
-                animation: 'hlPulseRingC 6s ease-in-out infinite 1.6s',
-              }}
-            />
-            <div
-              style={{
-                position: 'absolute',
-                width: '260px',
-                height: '260px',
-                top: '40%',
-                right: '6%',
-                transform: 'translate(50%, -50%)',
-                border: '1px solid var(--hero-accent-mid)',
-                borderRadius: '50%',
-                animation: 'hlPulseRing 4.5s ease-in-out infinite 1s',
-              }}
-            />
-            <div
-              style={{
-                position: 'absolute',
-                width: '420px',
-                height: '420px',
-                top: '40%',
-                right: '6%',
-                transform: 'translate(50%, -50%)',
-                border: '1px solid var(--hero-accent-mid)',
-                borderRadius: '50%',
-                animation: 'hlPulseRingB 5.5s ease-in-out infinite 2s',
-              }}
-            />
-
-            {/* Floating document shapes */}
-            <div
-              className="hl-doc-a"
-              style={{
-                position: 'absolute',
-                width: '34px',
-                height: '42px',
-                top: '18%',
-                left: '8%',
-                border: '1.5px solid rgba(93,202,165,0.3)',
-                borderRadius: '4px',
-                animation: 'hlFloatA 5s ease-in-out infinite',
-              }}
-            />
-            <div
-              className="hl-doc-b"
-              style={{
-                position: 'absolute',
-                width: '26px',
-                height: '32px',
-                top: '28%',
-                right: '10%',
-                border: '1.5px solid rgba(93,202,165,0.3)',
-                borderRadius: '4px',
-                animation: 'hlFloatB 6.5s ease-in-out infinite 0.5s',
-              }}
-            />
-
-            {/* Dots */}
-            <div
-              style={{
-                position: 'absolute',
-                width: '7px',
-                height: '7px',
-                borderRadius: '50%',
-                background: 'rgba(93,202,165,0.4)',
-                top: '62%',
-                left: '6%',
-                animation: 'hlShimmer 3s ease-in-out infinite',
-              }}
-            />
-            <div
-              style={{
-                position: 'absolute',
-                width: '5px',
-                height: '5px',
-                borderRadius: '50%',
-                background: 'rgba(93,202,165,0.28)',
-                top: '28%',
-                right: '22%',
-                animation: 'hlShimmer 4s ease-in-out infinite 0.8s',
-              }}
-            />
-            <div
-              style={{
-                position: 'absolute',
-                width: '6px',
-                height: '6px',
-                borderRadius: '50%',
-                background: 'rgba(194,102,43,0.38)',
-                top: '72%',
-                right: '12%',
-                animation: 'hlShimmer 3.5s ease-in-out infinite 1.2s',
-              }}
-            />
-
-            {/* Cross marks */}
-            <div
-              className="hl-cross hl-cross-a"
-              style={{
-                position: 'absolute',
-                top: '52%',
-                left: '21%',
-                animation: 'hlFloatC 7s ease-in-out infinite',
-              }}
-            />
-            <div
-              className="hl-cross hl-cross-b"
-              style={{
-                position: 'absolute',
-                top: '22%',
-                right: '28%',
-                animation: 'hlFloatA 8s ease-in-out infinite 1s',
-              }}
-            />
+          <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+            <div style={{ position: 'absolute', width: '360px', height: '360px', top: '50%', left: '50%', border: '1px solid var(--hero-border-ring)', borderRadius: '50%', transform: 'translate(-50%, -50%)', animation: 'hlPulseRing 4s ease-in-out infinite' }} />
+            <div style={{ position: 'absolute', width: '580px', height: '580px', top: '50%', left: '50%', border: '1px solid var(--hero-border-ring)', borderRadius: '50%', transform: 'translate(-50%, -50%)', animation: 'hlPulseRingB 5.5s ease-in-out infinite 0.8s' }} />
+            <div style={{ position: 'absolute', width: '800px', height: '800px', top: '50%', left: '50%', border: '1px solid var(--hero-border-ring)', borderRadius: '50%', transform: 'translate(-50%, -50%)', animation: 'hlPulseRingB 7s ease-in-out infinite 1.6s' }} />
+            <div style={{ position: 'absolute', width: '7px', height: '7px', borderRadius: '50%', background: 'var(--accent)', top: '22%', left: '12%', animation: 'hlShimmer 3s ease-in-out infinite', opacity: 0.5 }} />
+            <div style={{ position: 'absolute', width: '5px', height: '5px', borderRadius: '50%', background: 'var(--accent)', top: '58%', left: '8%', animation: 'hlShimmer 4s ease-in-out infinite 0.8s', opacity: 0.3 }} />
+            <div style={{ position: 'absolute', width: '6px', height: '6px', borderRadius: '50%', background: 'var(--accent)', top: '28%', right: '10%', animation: 'hlShimmer 3.5s ease-in-out infinite 1.2s', opacity: 0.4 }} />
           </div>
 
           <div
             style={{
               position: 'relative',
               zIndex: 2,
-              animation: 'hlFadeUp 0.6s ease-out both',
+              animation: 'hlFadeUp 0.7s ease-out both',
             }}
           >
             <div
               style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                background: 'rgba(212,136,42,0.1)',
+                border: '1px solid rgba(212,136,42,0.3)',
+                borderRadius: '999px',
+                padding: '6px 18px',
                 fontFamily: 'var(--font-mono)',
-                fontSize: '10px',
-                letterSpacing: '0.16em',
-                color: 'var(--hero-accent-mid)',
-                marginBottom: '1.25rem',
+                fontSize: '11px',
+                letterSpacing: '0.14em',
+                color: '#F5C882',
+                marginBottom: '2rem',
               }}
             >
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--accent)', flexShrink: 0 }} />
               FREE · NO LOGIN REQUIRED · 12 LANGUAGES
             </div>
 
             <h1
               style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(2rem, 5vw, 2.75rem)',
+                fontSize: 'clamp(2.75rem,5.5vw,4.5rem)',
                 fontWeight: 400,
                 color: 'var(--hero-text)',
-                lineHeight: 1.18,
-                marginBottom: '1.2rem',
+                lineHeight: 1.1,
+                margin: 0,
+                letterSpacing: '-0.02em',
               }}
             >
-              Understand your <em style={{ color: 'var(--hero-accent)', fontStyle: 'italic' }}>medical records.</em>
+              Understand your
             </h1>
+            <span
+              style={{
+                display: 'block',
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(2.75rem,5.5vw,4.5rem)',
+                fontWeight: 400,
+                fontStyle: 'italic',
+                color: 'var(--accent)',
+                lineHeight: 1.1,
+                margin: '0 0 2rem',
+                letterSpacing: '-0.02em',
+              }}
+            >
+              medical records.
+            </span>
 
             <p
               style={{
-                fontSize: '1rem',
-                color: 'var(--hero-accent)',
-                lineHeight: 1.65,
-                maxWidth: '480px',
-                margin: '0 auto 1.75rem',
+                fontSize: '1.1rem',
+                color: 'rgba(240,237,232,0.7)',
+                lineHeight: 1.75,
+                maxWidth: '520px',
+                margin: '0 auto 2rem',
               }}
             >
               Paste the paperwork you got from your doctor, hospital, or lab. We'll explain it in plain words you and your family can understand.
@@ -486,20 +348,20 @@ export default function HomePage() {
                 justifyContent: 'center',
                 gap: '8px',
                 flexWrap: 'wrap',
-                marginBottom: '2.5rem',
+                marginBottom: '4rem',
               }}
             >
               {['Discharge summaries', 'Lab results', 'Radiology reports', 'After-visit notes'].map((pill) => (
                 <span
                   key={pill}
                   style={{
-                    background: 'rgba(93,202,165,0.1)',
-                    border: '1px solid rgba(93,202,165,0.26)',
+                    background: 'rgba(212,136,42,0.08)',
+                    border: '1px solid rgba(212,136,42,0.25)',
                     borderRadius: '999px',
-                    padding: '4px 13px',
-                    fontSize: '11px',
-                    letterSpacing: '0.07em',
-                    color: 'var(--hero-accent)',
+                    padding: '6px 16px',
+                    fontSize: '12px',
+                    letterSpacing: '0.05em',
+                    color: 'rgba(245,200,130,0.75)',
                   }}
                 >
                   {pill}
@@ -507,55 +369,10 @@ export default function HomePage() {
               ))}
             </div>
           </div>
-
-          <style jsx>{`
-            .hl-doc-a::after,
-            .hl-doc-b::after {
-              content: '';
-              position: absolute;
-              top: 8px;
-              left: 6px;
-              right: 6px;
-              height: 1.5px;
-              background: rgba(93, 202, 165, 0.25);
-              box-shadow: 0 5px 0 rgba(93, 202, 165, 0.18), 0 10px 0 rgba(93, 202, 165, 0.12);
-              border-radius: 1px;
-              pointer-events: none;
-            }
-
-            .hl-cross {
-              width: 12px;
-              height: 12px;
-              pointer-events: none;
-            }
-
-            .hl-cross::before,
-            .hl-cross::after {
-              content: '';
-              position: absolute;
-              top: 50%;
-              left: 50%;
-              background: rgba(93, 202, 165, 0.18);
-              border-radius: 1px;
-              pointer-events: none;
-            }
-
-            .hl-cross::before {
-              width: 12px;
-              height: 1.5px;
-              transform: translate(-50%, -50%);
-            }
-
-            .hl-cross::after {
-              width: 1.5px;
-              height: 12px;
-              transform: translate(-50%, -50%);
-            }
-          `}</style>
         </section>
       )}
 
-      <div style={{ background: 'var(--hero-bg-dark)' }}>
+      <div style={{ background: 'var(--bg)' }}>
         {/* Main */}
         <main
           style={{
@@ -572,7 +389,7 @@ export default function HomePage() {
             className="card-outer-wrap"
             style={{
               background: 'var(--hero-bg)',
-              padding: '0 2rem 2.5rem',
+              padding: '0 2.5rem 3rem',
               position: 'relative',
               zIndex: 2,
             }}
@@ -583,12 +400,14 @@ export default function HomePage() {
                 background: 'var(--surface)',
                 borderRadius: 'var(--radius-lg)',
                 border: '1px solid var(--border)',
+                boxShadow: 'var(--shadow-card)',
                 overflow: 'hidden',
                 padding: '2rem',
               }}
             >
             {/* Input tabs */}
             <div
+              className="tab-band-outer"
               style={{
                 background: 'var(--primary-dark)',
                 padding: '10px 12px',
@@ -615,8 +434,8 @@ export default function HomePage() {
                     cursor: 'pointer',
                     fontFamily: 'var(--font-body)',
                     borderColor: tab === t ? 'rgba(255,255,255,0.2)' : 'transparent',
-                    background: tab === t ? 'var(--surface)' : 'transparent',
-                    color: tab === t ? 'var(--primary-dark)' : 'rgba(159,225,203,0.75)',
+                    backgroundColor: tab === t ? 'var(--surface)' : 'transparent',
+                    color: tab === t ? 'var(--primary-dark)' : 'rgba(212,136,42,0.6)',
                   }}
                 >
                   {t === 'paste' && <PasteIcon />}
@@ -821,11 +640,11 @@ export default function HomePage() {
                       onClick={() => setReadingLevel(lvl)}
                       aria-pressed={readingLevel === lvl}
                       style={{
-                        background: readingLevel === lvl ? 'var(--primary-light)' : 'var(--surface)',
+                        background: readingLevel === lvl ? 'var(--accent-light)' : '#FAFAF8',
                         border: `1.5px solid ${
-                          readingLevel === lvl ? 'var(--primary)' : 'var(--border-strong)'
+                          readingLevel === lvl ? 'var(--accent)' : 'var(--border-strong)'
                         }`,
-                        color: readingLevel === lvl ? 'var(--primary-text)' : 'var(--text-primary)',
+                        color: readingLevel === lvl ? 'var(--accent-text)' : 'var(--text-primary)',
                         borderRadius: '999px',
                         padding: '7px 14px',
                         fontSize: '12px',
@@ -838,7 +657,7 @@ export default function HomePage() {
                           className="level-chip-description"
                           style={{
                             fontSize: '9px',
-                            color: readingLevel === lvl ? 'var(--primary)' : 'var(--text-muted)',
+                            color: readingLevel === lvl ? 'var(--accent)' : 'var(--text-muted)',
                             marginTop: '1px',
                           }}
                         >
@@ -872,10 +691,10 @@ export default function HomePage() {
                   style={{
                     border: '1.5px solid var(--border-strong)',
                     borderRadius: 'var(--radius-md)',
-                    padding: '9px 12px',
+                    padding: '10px 12px',
                     fontSize: '14px',
                     color: 'var(--text-primary)',
-                    background: 'var(--surface)',
+                    backgroundColor: '#FAFAF8',
                     width: '100%',
                   }}
                 >
@@ -895,8 +714,10 @@ export default function HomePage() {
                 style={{
                   flexShrink: 0,
                   border: 'none',
-                  padding: '12px 28px',
-                  fontSize: '1rem',
+                  backgroundColor: 'var(--accent)',
+                  color: '#FFFFFF',
+                  padding: '13px 32px',
+                  fontSize: '15px',
                   fontWeight: 500,
                 }}
               >
@@ -933,50 +754,51 @@ export default function HomePage() {
           <div
             className="stats-row"
             style={{
-              background: 'var(--hero-bg-dark)',
+              background: 'var(--bg)',
+              borderTop: '3px solid var(--accent)',
               display: 'flex',
               justifyContent: 'center',
-              gap: '3rem',
-              padding: '1.75rem 2rem',
+              padding: '3.5rem 2.5rem',
               flexWrap: 'wrap',
             }}
           >
-            <div style={{ textAlign: 'center' }}>
+            <div className="stat" style={{ flex: 1, minWidth: '140px', textAlign: 'center', padding: '0 2.5rem', position: 'relative' }}>
               <div
                 style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: '28px',
+                  fontSize: 'clamp(3rem,5.5vw,4.5rem)',
                   fontWeight: 400,
-                  color: 'var(--hero-text)',
+                  color: 'var(--text-primary)',
                   lineHeight: 1,
                   textAlign: 'center',
                 }}
               >
-                88%
+                88<span style={{ color: 'var(--accent)' }}>%</span>
               </div>
               <div
                 style={{
                   fontFamily: 'var(--font-mono)',
-                  fontSize: '9px',
-                  letterSpacing: '0.09em',
-                  color: 'var(--hero-accent-mid)',
-                  marginTop: '5px',
-                  textAlign: 'center',
+                  fontSize: '10px',
+                  letterSpacing: '0.12em',
+                  color: 'var(--text-secondary)',
+                  marginTop: '10px',
+                  lineHeight: 1.5,
                   maxWidth: '110px',
-                  lineHeight: 1.4,
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
                 }}
               >
                 OF ADULTS HAVE LIMITED HEALTH LITERACY
               </div>
             </div>
 
-            <div style={{ textAlign: 'center' }}>
+            <div className="stat" style={{ flex: 1, minWidth: '140px', textAlign: 'center', padding: '0 2.5rem', position: 'relative' }}>
               <div
                 style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: '28px',
+                  fontSize: 'clamp(3rem,5.5vw,4.5rem)',
                   fontWeight: 400,
-                  color: 'var(--hero-text)',
+                  color: 'var(--accent)',
                   lineHeight: 1,
                   textAlign: 'center',
                 }}
@@ -986,42 +808,44 @@ export default function HomePage() {
               <div
                 style={{
                   fontFamily: 'var(--font-mono)',
-                  fontSize: '9px',
-                  letterSpacing: '0.09em',
-                  color: 'var(--hero-accent-mid)',
-                  marginTop: '5px',
-                  textAlign: 'center',
+                  fontSize: '10px',
+                  letterSpacing: '0.12em',
+                  color: 'var(--text-secondary)',
+                  marginTop: '10px',
+                  lineHeight: 1.5,
                   maxWidth: '110px',
-                  lineHeight: 1.4,
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
                 }}
               >
                 LANGUAGES SUPPORTED
               </div>
             </div>
 
-            <div style={{ textAlign: 'center' }}>
+            <div className="stat" style={{ flex: 1, minWidth: '140px', textAlign: 'center', padding: '0 2.5rem', position: 'relative' }}>
               <div
                 style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: '28px',
+                  fontSize: 'clamp(3rem,5.5vw,4.5rem)',
                   fontWeight: 400,
-                  color: 'var(--hero-text)',
+                  color: 'var(--text-primary)',
                   lineHeight: 1,
                   textAlign: 'center',
                 }}
               >
-                30%
+                30<span style={{ color: 'var(--accent)' }}>%</span>
               </div>
               <div
                 style={{
                   fontFamily: 'var(--font-mono)',
-                  fontSize: '9px',
-                  letterSpacing: '0.09em',
-                  color: 'var(--hero-accent-mid)',
-                  marginTop: '5px',
-                  textAlign: 'center',
+                  fontSize: '10px',
+                  letterSpacing: '0.12em',
+                  color: 'var(--text-secondary)',
+                  marginTop: '10px',
+                  lineHeight: 1.5,
                   maxWidth: '110px',
-                  lineHeight: 1.4,
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
                 }}
               >
                 LOWER READMISSION WHEN PATIENTS UNDERSTAND
@@ -1030,30 +854,117 @@ export default function HomePage() {
           </div>
         )}
 
+        {!result && (
+          <section
+            className="trust-section"
+            style={{
+              background: 'var(--bg)',
+              padding: '0 2.5rem 3.5rem',
+            }}
+          >
+            <div
+              style={{
+                height: '1px',
+                background:
+                  'linear-gradient(90deg, transparent, var(--border-strong) 30%, var(--border-strong) 70%, transparent)',
+                marginBottom: '2.5rem',
+              }}
+            />
+
+            <div className="trust-cards-row" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+              {[
+                {
+                  title: 'Free, always',
+                  desc: 'No account, no subscription, no paywall. Every patient deserves access.',
+                  icon: (
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                      <path d="M3 8.5l3 3 7-7" stroke="var(--accent)" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  ),
+                },
+                {
+                  title: 'Private by design',
+                  desc: 'Nothing stored beyond your session unless you save a share link.',
+                  icon: (
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                      <rect x="3.5" y="7" width="9" height="6.5" rx="1.5" stroke="var(--accent)" strokeWidth="1.25" />
+                      <path d="M5.5 7V5.5a2.5 2.5 0 115 0V7" stroke="var(--accent)" strokeWidth="1.25" strokeLinecap="round" />
+                    </svg>
+                  ),
+                },
+                {
+                  title: 'Built by a nurse',
+                  desc: 'Designed from the bedside up. Clinical accuracy is the product.',
+                  icon: (
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                      <circle cx="8" cy="5" r="2.5" stroke="var(--accent)" strokeWidth="1.25" />
+                      <path d="M3.5 13a4.5 4.5 0 019 0" stroke="var(--accent)" strokeWidth="1.25" strokeLinecap="round" />
+                    </svg>
+                  ),
+                },
+              ].map((card) => (
+                <div
+                  key={card.title}
+                  style={{
+                    flex: 1,
+                    minWidth: '180px',
+                    background: 'var(--surface)',
+                    border: '1px solid var(--border)',
+                    borderTop: '2px solid var(--accent)',
+                    borderRadius: 'var(--radius-lg)',
+                    padding: '1.25rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '10px',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '34px',
+                      height: '34px',
+                      background: 'var(--accent-light)',
+                      border: '1px solid rgba(212,136,42,0.25)',
+                      borderRadius: '8px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {card.icon}
+                  </div>
+                  <p style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>{card.title}</p>
+                  <p style={{ fontSize: '11px', color: 'var(--text-secondary)', lineHeight: 1.5 }}>{card.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* Output section */}
         {result && (
           <div ref={outputRef} tabIndex={-1}>
             {/* Summary line */}
             <div
               style={{
-                background: 'var(--primary-light)',
-                border: '1px solid var(--primary)',
+                background: 'var(--accent-light)',
+                border: '1px solid rgba(212,136,42,0.4)',
+                borderLeft: '3px solid var(--accent)',
                 borderRadius: 'var(--radius-md)',
                 padding: '1rem 1.25rem',
-                marginBottom: '1.25rem',
+                marginBottom: '1.5rem',
                 display: 'flex',
                 alignItems: 'flex-start',
                 gap: '10px',
               }}
             >
-              <span style={{ color: 'var(--primary)', fontSize: '1.125rem', lineHeight: 1, marginTop: '2px' }}>
+              <span style={{ color: 'var(--accent)', fontSize: '18px', lineHeight: 1, marginTop: '2px', flexShrink: 0 }}>
                 ✓
               </span>
               <p
                 style={{
-                  color: 'var(--primary-text)',
+                  color: 'var(--accent-text)',
                   fontWeight: 500,
-                  fontSize: '1.0625rem',
+                  fontSize: '1rem',
                   lineHeight: 1.5,
                 }}
               >
@@ -1075,14 +986,14 @@ export default function HomePage() {
                   <span
                     style={{
                       fontFamily: 'var(--font-mono)',
-                      fontSize: '0.75rem',
-                      fontWeight: 500,
-                      letterSpacing: '0.08em',
-                      color: 'var(--urgent-text)',
-                      background: 'var(--urgent-bg)',
-                      border: '1px solid var(--urgent-border)',
+                      fontSize: '9px',
+                      letterSpacing: '0.1em',
+                      color: 'var(--accent-text)',
+                      background: 'var(--accent-light)',
+                      border: '1px solid rgba(212,136,42,0.3)',
                       borderRadius: '4px',
                       padding: '2px 8px',
+                      display: 'inline-block',
                     }}
                   >
                     IMPORTANT — DO THESE THINGS
@@ -1103,7 +1014,7 @@ export default function HomePage() {
 
             {/* Side-by-side panels */}
             <div
-              className="side-by-side"
+              className="results-panels"
               style={{
                 display: 'flex',
                 gap: '1rem',
@@ -1115,6 +1026,9 @@ export default function HomePage() {
               <div
                 className="card"
                 style={{
+                  background: 'var(--surface)',
+                  border: '1px solid var(--border)',
+                  borderRadius: 'var(--radius-lg)',
                   flex: '1 1 0',
                   minWidth: 0,
                   padding: '1.5rem',
@@ -1125,8 +1039,8 @@ export default function HomePage() {
                 <div
                   style={{
                     fontFamily: 'var(--font-mono)',
-                    fontSize: '0.7rem',
-                    letterSpacing: '0.08em',
+                    fontSize: '9px',
+                    letterSpacing: '0.1em',
                     color: 'var(--text-muted)',
                     marginBottom: '1rem',
                   }}
@@ -1136,9 +1050,9 @@ export default function HomePage() {
                 <pre
                   style={{
                     fontFamily: 'var(--font-body)',
-                    fontSize: '0.875rem',
+                    fontSize: '0.9375rem',
                     color: 'var(--text-secondary)',
-                    lineHeight: 1.7,
+                    lineHeight: 1.75,
                     whiteSpace: 'pre-wrap',
                     wordBreak: 'break-word',
                   }}
@@ -1151,12 +1065,14 @@ export default function HomePage() {
               <div
                 className="card"
                 style={{
+                  background: 'var(--surface)',
+                  border: '2px solid var(--accent)',
+                  borderRadius: 'var(--radius-lg)',
                   flex: '1 1 0',
                   minWidth: 0,
                   padding: '1.5rem',
                   maxHeight: '560px',
                   overflowY: 'auto',
-                  borderColor: 'var(--primary)',
                 }}
               >
                 <div
@@ -1170,9 +1086,9 @@ export default function HomePage() {
                   <div
                     style={{
                       fontFamily: 'var(--font-mono)',
-                      fontSize: '0.7rem',
-                      letterSpacing: '0.08em',
-                      color: 'var(--primary)',
+                      fontSize: '9px',
+                      letterSpacing: '0.1em',
+                      color: 'var(--accent)',
                     }}
                   >
                     PLAIN LANGUAGE · {READING_LEVEL_LABELS[readingLevel].toUpperCase()} ·{' '}
@@ -1181,7 +1097,7 @@ export default function HomePage() {
                 </div>
                 <div className="translation-content">
                   {result.translation.split('\n\n').map((para, i) => (
-                    <p key={i} style={{ fontSize: '1rem', color: 'var(--text-primary)', lineHeight: 1.75 }}>
+                    <p key={i} style={{ fontSize: '0.9375rem', color: 'var(--text-primary)', lineHeight: 1.75 }}>
                       {para}
                     </p>
                   ))}
@@ -1191,30 +1107,34 @@ export default function HomePage() {
 
             {/* Actions row */}
             <div
+              className="actions-row"
               style={{
                 display: 'flex',
                 flexWrap: 'wrap',
                 gap: '0.75rem',
                 alignItems: 'center',
                 justifyContent: 'space-between',
+                borderTop: '2px solid var(--border-strong)',
+                paddingTop: '1.25rem',
+                marginTop: 0,
               }}
             >
-              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                <button className="btn btn-secondary" onClick={handleCopy}>
+              <div className="actions-left" style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                <button className="btn btn-secondary" style={{ backgroundColor: '#1A1410', color: '#F0EDE8', border: 'none' }} onClick={handleCopy}>
                   <CopyIcon />
                   {copied ? 'Copied!' : 'Copy Translation'}
                 </button>
-                <button className="btn btn-secondary" onClick={handleDownloadPDF} disabled={downloading}>
+                <button className="btn btn-secondary" style={{ backgroundColor: '#1A1410', color: '#F0EDE8', border: 'none' }} onClick={handleDownloadPDF} disabled={downloading}>
                   <DownloadIcon />
                   {downloading ? 'Generating PDF...' : 'Download PDF'}
                 </button>
-                <button className="btn btn-secondary" onClick={handleShare} disabled={sharing}>
+                <button className="btn btn-secondary" style={{ backgroundColor: '#1A1410', color: '#F0EDE8', border: 'none' }} onClick={handleShare} disabled={sharing}>
                   <ShareIcon />
                   {shareUrl ? 'Link Copied!' : sharing ? 'Creating link...' : 'Share as Link'}
                 </button>
               </div>
 
-              <button className="btn btn-ghost" onClick={clearAll}>
+              <button className="btn btn-ghost" style={{ backgroundColor: 'var(--bg)', color: 'var(--text-primary)', border: '2px solid var(--text-primary)' }} onClick={clearAll}>
                 Start Over
               </button>
             </div>
@@ -1239,15 +1159,25 @@ export default function HomePage() {
             )}
 
             {/* Reverse-check */}
-            <VerifyPanel
-              original={originalText}
-              translation={result.translation}
-              onRetranslate={() => {
-                setResult(null)
-                setShareUrl(null)
-                window.scrollTo({ top: 0, behavior: 'smooth' })
+            <div
+              className="verify-section"
+              style={{
+                background: 'var(--surface-2)',
+                borderTop: '2px solid var(--border-strong)',
+                padding: '1.25rem 2.5rem',
+                marginTop: '1rem',
               }}
-            />
+            >
+              <VerifyPanel
+                original={originalText}
+                translation={result.translation}
+                onRetranslate={() => {
+                  setResult(null)
+                  setShareUrl(null)
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }}
+              />
+            </div>
           </div>
         )}
 
@@ -1268,27 +1198,35 @@ export default function HomePage() {
         <footer style={{ marginTop: '4rem' }}>
           {/* Section A — Emergency bar */}
           <div
+            className="footer-emergency"
             style={{
-              background: '#1A1614',
-              borderTop: '1px solid var(--accent)',
-              padding: '10px 2rem',
+              background: 'var(--hero-bg)',
+              borderTop: '2px solid var(--accent)',
+              padding: '14px 2.5rem',
               display: 'flex',
               alignItems: 'center',
-              gap: '10px',
+              gap: '12px',
+              flexWrap: 'wrap',
             }}
           >
-            <span
+            <div
               style={{
-                width: '7px',
-                height: '7px',
+                width: '30px',
+                height: '30px',
                 borderRadius: '50%',
-                background: 'var(--accent)',
+                background: 'rgba(212,136,42,0.15)',
+                border: '1px solid rgba(212,136,42,0.4)',
                 flexShrink: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
-            />
+            >
+              <AlertIcon />
+            </div>
             <span style={{ fontSize: '13px', lineHeight: 1.5 }}>
-              <span style={{ fontWeight: 500, color: 'var(--hero-text)' }}>Medical emergency?</span>{' '}
-              <span style={{ color: 'var(--accent-text)' }}>
+              <span style={{ fontWeight: 600, color: '#FFFFFF' }}>Medical emergency?</span>{' '}
+              <span style={{ color: 'rgba(240,237,232,0.85)' }}>
                 Call 911 immediately. Do not use this tool in an emergency situation.
               </span>
             </span>
@@ -1296,17 +1234,18 @@ export default function HomePage() {
 
           {/* Section B — Disclaimer */}
           <div
+            className="footer-disclaimer"
             style={{
-              background: 'var(--hero-bg-dark)',
-              borderTop: '1px solid var(--hero-border-subtle)',
-              padding: '14px 2rem',
+              background: 'var(--hero-bg-mid)',
+              borderTop: '1px solid rgba(255,255,255,0.08)',
+              padding: '16px 2.5rem',
             }}
           >
             <p
               style={{
-                fontSize: '12px',
-                color: 'var(--hero-accent-mid)',
-                lineHeight: 1.6,
+                fontSize: '12.5px',
+                color: 'rgba(240,237,232,0.6)',
+                lineHeight: 1.7,
                 maxWidth: '800px',
               }}
             >
@@ -1318,17 +1257,21 @@ export default function HomePage() {
 
           {/* Section C — Bottom strip */}
           <div
+            className="footer-bottom"
             style={{
-              background: 'var(--hero-bg-darkest)',
-              borderTop: '1px solid rgba(255,255,255,0.04)',
-              padding: '10px 2rem',
+              background: 'var(--hero-bg-dark)',
+              borderTop: '1px solid rgba(255,255,255,0.08)',
+              padding: '13px 2.5rem',
               display: 'flex',
               justifyContent: 'space-between',
-              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '8px',
             }}
           >
-            <span style={{ fontSize: '11px', color: 'rgba(93,202,165,0.4)' }}>Free to use. No account needed.</span>
-            <span style={{ fontSize: '11px', color: 'rgba(93,202,165,0.4)' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'rgba(212,136,42,0.8)', letterSpacing: '0.06em', fontWeight: 500 }}>
+              FREE TO USE · NO ACCOUNT NEEDED
+            </span>
+            <span style={{ fontSize: '12px', color: 'rgba(240,237,232,0.55)' }}>
               A Rohimaya Health AI project
             </span>
           </div>
@@ -1395,6 +1338,16 @@ function DownloadIcon() {
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
       <path d="M8 2v8M5 11l3 3 3-3" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round"/>
       <path d="M3 13h10" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round"/>
+    </svg>
+  )
+}
+
+function AlertIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+      <path d="M8 2.2L14 13H2L8 2.2Z" stroke="var(--accent)" strokeWidth="1.25" strokeLinejoin="round" />
+      <path d="M8 6v3.2" stroke="var(--accent)" strokeWidth="1.25" strokeLinecap="round" />
+      <circle cx="8" cy="11.2" r="0.7" fill="var(--accent)" />
     </svg>
   )
 }
