@@ -442,3 +442,16 @@ textarea {
     padding: 1rem !important;
   }
 }
+
+@media print {
+  header, nav, .tab-bar, .btn, button, footer,
+  .emergency-bar, .disclaimer-bar, .footer-bottom,
+  .stats-row, .hero-section, .card-outer-wrap { display: none !important; }
+
+  body { background: white; color: #1A1614; font-family: Georgia, serif; }
+
+  .translation-content { display: block !important; }
+  .translation-content p { font-size: 13pt; line-height: 1.7; margin-bottom: 12pt; }
+
+  .urgent-card { border: 1px solid #F5C5A8; padding: 8pt; margin-bottom: 8pt; page-break-inside: avoid; }
+}

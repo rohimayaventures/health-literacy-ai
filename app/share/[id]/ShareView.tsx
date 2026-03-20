@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from 'react'
 import { ShareSession, LANGUAGE_LABELS, READING_LEVEL_LABELS, ReadingLevel, Language } from '@/lib/types'
+import { generateTranslationPDF } from '@/lib/generate-pdf'
 
 export default function ShareView({ id }: { id: string }) {
   const [session, setSession] = useState<ShareSession | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [downloading, setDownloading] = useState(false)
 
   useEffect(() => {
     fetch(`/api/share?id=${id}`)
@@ -50,6 +52,24 @@ export default function ShareView({ id }: { id: string }) {
         {error ?? 'Session not found.'}
       </div>
     )
+  }
+
+  const handleDownloadPDF = async () => {
+    if (downloading) return
+    setDownloading(true)
+    try {
+      await generateTranslationPDF({
+        urgentItems: session.urgentItems,
+        translation: session.translation,
+        summaryLine: session.summaryLine,
+        readingLevel: session.readingLevel,
+        language: session.language,
+      })
+    } catch (err) {
+      console.error('PDF generation failed:', err)
+    } finally {
+      setDownloading(false)
+    }
   }
 
   return (
@@ -163,6 +183,13 @@ export default function ShareView({ id }: { id: string }) {
           </div>
         </div>
 
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
+          <button className="btn btn-secondary" onClick={handleDownloadPDF} disabled={downloading}>
+            <DownloadIcon />
+            {downloading ? 'Generating PDF...' : 'Download PDF'}
+          </button>
+        </div>
+
         <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', textAlign: 'center' }}>
           This translation was created with HealthLiteracy AI. It is for patient education only.{' '}
           <a href="/" style={{ color: 'var(--primary)' }}>
@@ -242,5 +269,14 @@ export default function ShareView({ id }: { id: string }) {
         </div>
       </footer>
     </div>
+  )
+}
+
+function DownloadIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+      <path d="M8 2v8M5 11l3 3 3-3" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M3 13h10" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round"/>
+    </svg>
   )
 }

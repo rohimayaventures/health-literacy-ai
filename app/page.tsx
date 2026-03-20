@@ -11,6 +11,7 @@ import {
   READING_LEVEL_DESCRIPTIONS,
 } from '@/lib/types'
 import { VerifyPanel } from '@/components/VerifyPanel'
+import { generateTranslationPDF } from '@/lib/generate-pdf'
 
 type InputTab = 'paste' | 'upload' | 'voice'
 
@@ -31,6 +32,7 @@ export default function HomePage() {
   const [copied, setCopied] = useState(false)
   const [shareUrl, setShareUrl] = useState<string | null>(null)
   const [sharing, setSharing] = useState(false)
+  const [downloading, setDownloading] = useState(false)
   const [originalText, setOriginalText] = useState('')
 
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -133,15 +135,13 @@ export default function HomePage() {
 
   const handleCopy = async () => {
     if (!result) return
-    const text = [
-      result.summaryLine,
-      '',
-      result.urgentItems.length > 0 ? 'Important actions:\n' + result.urgentItems.map(i => '• ' + i).join('\n') : '',
-      '',
-      result.translation,
-    ]
-      .filter(Boolean)
-      .join('\n')
+    const lines: string[] = [result.summaryLine, '']
+    if (result.urgentItems.length > 0) {
+      lines.push('IMPORTANT — DO THESE THINGS')
+      lines.push(...result.urgentItems.map((i) => '• ' + i))
+    }
+    lines.push('', result.translation, '', "HealthLiteracy AI is for patient education only. Always follow your care team's instructions. Medical emergency? Call 911.")
+    const text = lines.join('\n')
     try {
       await navigator.clipboard.writeText(text)
       setCopied(true)
@@ -180,6 +180,24 @@ export default function HomePage() {
       setError('Could not create share link. Please try again.')
     } finally {
       setSharing(false)
+    }
+  }
+
+  const handleDownloadPDF = async () => {
+    if (!result || downloading) return
+    setDownloading(true)
+    try {
+      await generateTranslationPDF({
+        urgentItems: result.urgentItems,
+        translation: result.translation,
+        summaryLine: result.summaryLine,
+        readingLevel,
+        language,
+      })
+    } catch (err) {
+      console.error('PDF generation failed:', err)
+    } finally {
+      setDownloading(false)
     }
   }
 
@@ -1186,6 +1204,10 @@ export default function HomePage() {
                   <CopyIcon />
                   {copied ? 'Copied!' : 'Copy Translation'}
                 </button>
+                <button className="btn btn-secondary" onClick={handleDownloadPDF} disabled={downloading}>
+                  <DownloadIcon />
+                  {downloading ? 'Generating PDF...' : 'Download PDF'}
+                </button>
                 <button className="btn btn-secondary" onClick={handleShare} disabled={sharing}>
                   <ShareIcon />
                   {shareUrl ? 'Link Copied!' : sharing ? 'Creating link...' : 'Share as Link'}
@@ -1364,6 +1386,15 @@ function ShareIcon() {
       <circle cx="4" cy="8" r="1.5" stroke="currentColor" strokeWidth="1.25" />
       <line x1="5.3" y1="7.3" x2="10.7" y2="3.7" stroke="currentColor" strokeWidth="1.25" />
       <line x1="5.3" y1="8.7" x2="10.7" y2="12.3" stroke="currentColor" strokeWidth="1.25" />
+    </svg>
+  )
+}
+
+function DownloadIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+      <path d="M8 2v8M5 11l3 3 3-3" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M3 13h10" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round"/>
     </svg>
   )
 }
