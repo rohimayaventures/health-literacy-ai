@@ -99,6 +99,7 @@ export async function GET(req: NextRequest) {
       readingLevel: data.reading_level,
       language: data.language,
       createdAt: data.created_at,
+      expiresAt: data.expires_at ?? null,
     })
   } catch (error) {
     console.error('[share/get] error:', error)

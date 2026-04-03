@@ -64,6 +64,8 @@ export interface ShareSession {
   readingLevel: ReadingLevel
   language: Language
   createdAt: string
+  /** ISO 8601 expiry from Supabase; omitted on very old rows without the column */
+  expiresAt?: string | null
 }
 
 export interface VerifyResponse {

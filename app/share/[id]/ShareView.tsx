@@ -8,15 +8,29 @@ export default function ShareView({ id }: { id: string }) {
   const [session, setSession] = useState<ShareSession | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [expired, setExpired] = useState(false)
   const [downloading, setDownloading] = useState(false)
   const [pdfError, setPdfError] = useState<string | null>(null)
 
   useEffect(() => {
-    fetch(`/api/share?id=${id}`)
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.error) throw new Error(data.error)
-        setSession(data)
+    let cancelled = false
+    ;(async () => {
+      try {
+        const r = await fetch(`/api/share?id=${id}`)
+        const data = await r.json()
+        if (cancelled) return
+
+        if (r.status === 410) {
+          setExpired(true)
+          return
+        }
+
+        if (!r.ok) {
+          setError(data.error ?? 'Session not found.')
+          return
+        }
+
+        setSession(data as ShareSession)
         document.documentElement.lang =
           (
             {
@@ -33,10 +47,16 @@ export default function ShareView({ id }: { id: string }) {
               tl: 'fil',
               ja: 'ja',
             } as Record<Language, string>
-          )[data.language as Language] ?? 'en'
-      })
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false))
+          )[(data as ShareSession).language as Language] ?? 'en'
+      } catch {
+        if (!cancelled) setError('Could not load this page. Please check your connection and try again.')
+      } finally {
+        if (!cancelled) setLoading(false)
+      }
+    })()
+    return () => {
+      cancelled = true
+    }
   }, [id])
 
   if (loading) {
@@ -47,13 +67,66 @@ export default function ShareView({ id }: { id: string }) {
     )
   }
 
-  if (error || !session) {
+  if (expired) {
     return (
-      <div style={{ padding: '4rem 2rem', textAlign: 'center', color: 'var(--urgent-text)' }}>
-        {error ?? 'Session not found.'}
+      <div style={{ minHeight: '100vh', background: 'var(--bg)', display: 'flex', flexDirection: 'column' }}>
+        <ShareErrorHeader />
+        <main
+          style={{
+            flex: 1,
+            maxWidth: '560px',
+            margin: '0 auto',
+            padding: '3rem 2rem',
+            textAlign: 'center',
+          }}
+          role="alert"
+        >
+          <p style={{ fontSize: '1.0625rem', color: 'var(--text-primary)', lineHeight: 1.6, marginBottom: '1rem' }}>
+            This shared translation has expired.
+          </p>
+          <p style={{ fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+            <a href="/" style={{ color: 'var(--primary)', fontWeight: 600 }}>
+              Go to HealthLiteracy AI
+            </a>{' '}
+            to create a new one.
+          </p>
+        </main>
       </div>
     )
   }
+
+  if (error || !session) {
+    return (
+      <div style={{ minHeight: '100vh', background: 'var(--bg)', display: 'flex', flexDirection: 'column' }}>
+        <ShareErrorHeader />
+        <main
+          style={{
+            flex: 1,
+            maxWidth: '560px',
+            margin: '0 auto',
+            padding: '3rem 2rem',
+            textAlign: 'center',
+          }}
+          role="alert"
+        >
+          <p style={{ fontSize: '1.0625rem', color: 'var(--text-primary)', lineHeight: 1.6, marginBottom: '1rem' }}>
+            {error ?? 'We could not find this shared translation. The link may be wrong or the session may no longer exist.'}
+          </p>
+          <p style={{ fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+            <a href="/" style={{ color: 'var(--primary)', fontWeight: 600 }}>
+              Go to HealthLiteracy AI
+            </a>{' '}
+            to translate a document.
+          </p>
+        </main>
+      </div>
+    )
+  }
+
+  const expiresLabel =
+    session.expiresAt != null && session.expiresAt !== ''
+      ? new Date(session.expiresAt).toLocaleDateString(undefined, { dateStyle: 'long' })
+      : null
 
   const handleDownloadPDF = async () => {
     if (downloading) return
@@ -114,6 +187,18 @@ export default function ShareView({ id }: { id: string }) {
       </header>
 
       <main style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem' }}>
+        {expiresLabel && (
+          <p
+            style={{
+              fontSize: '0.875rem',
+              color: 'var(--text-secondary)',
+              marginBottom: '1rem',
+              textAlign: 'center',
+            }}
+          >
+            This link expires on {expiresLabel}.
+          </p>
+        )}
         <div
           style={{
             background: 'var(--accent-light)',
@@ -301,6 +386,48 @@ export default function ShareView({ id }: { id: string }) {
         </div>
       </footer>
     </div>
+  )
+}
+
+function ShareErrorHeader() {
+  return (
+    <header
+      style={{
+        background: 'var(--hero-bg)',
+        borderBottom: '1px solid var(--hero-border-subtle)',
+        height: '68px',
+        padding: '0 2.5rem',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div
+          style={{
+            width: '3px',
+            height: '40px',
+            background: 'var(--accent)',
+            borderRadius: '2px',
+            flexShrink: 0,
+            marginRight: '12px',
+          }}
+        />
+        <a
+          href="/"
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: '22px',
+            fontWeight: 400,
+            color: 'var(--hero-text)',
+            lineHeight: 1.1,
+            textDecoration: 'none',
+          }}
+        >
+          HealthLiteracy <span style={{ color: 'var(--accent)', fontStyle: 'italic' }}>AI</span>
+        </a>
+      </div>
+    </header>
   )
 }
 

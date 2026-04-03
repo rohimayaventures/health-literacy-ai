@@ -19,10 +19,10 @@ READING LEVEL INSTRUCTIONS:
 TRANSLATION LANGUAGE CODES:
 - en: English
 - es: Spanish
-- zh: Mandarin Chinese (Simplified)
+- zh: Mandarin (简体)
 - ar: Arabic
 - fr: French
-- pt: Portuguese (Brazilian)
+- pt: Portuguese
 - vi: Vietnamese
 - ko: Korean
 - hi: Hindi

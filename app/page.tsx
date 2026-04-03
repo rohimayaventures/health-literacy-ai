@@ -15,7 +15,13 @@ import { generateTranslationPDF } from '@/lib/generate-pdf'
 
 type InputTab = 'paste' | 'upload' | 'voice'
 
+/** DOM Speech API error event (not in all TypeScript lib targets). */
+type SpeechRecognitionErrorEvent = Event & { error?: string }
+
 const READING_LEVELS: ReadingLevel[] = ['5th', '8th', 'college']
+
+const VOICE_BROWSER_SUPPORT_MESSAGE =
+  'Voice input works best in Chrome or Edge. Your browser may not support this feature.'
 
 export default function HomePage() {
   const [tab, setTab] = useState<InputTab>('paste')
@@ -29,6 +35,7 @@ export default function HomePage() {
   const [uploadError, setUploadError] = useState<string | null>(null)
   const [isListening, setIsListening] = useState(false)
   const [voiceSupported, setVoiceSupported] = useState(false)
+  const [voiceUiError, setVoiceUiError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
   const [shareUrl, setShareUrl] = useState<string | null>(null)
   const [sharing, setSharing] = useState(false)
@@ -37,11 +44,15 @@ export default function HomePage() {
 
   const fileInputRef = useRef<HTMLInputElement>(null)
   const recognitionRef = useRef<unknown>(null)
-  const outputRef = useRef<HTMLDivElement>(null)
+  const resultsHeadingRef = useRef<HTMLHeadingElement>(null)
 
   useEffect(() => {
     setVoiceSupported('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)
   }, [])
+
+  useEffect(() => {
+    if (tab !== 'voice') setVoiceUiError(null)
+  }, [tab])
 
   const handleUpload = useCallback(async (file: File) => {
     setUploadError(null)
@@ -71,36 +82,61 @@ export default function HomePage() {
       return
     }
 
-    const SpeechRecognition =
+    setVoiceUiError(null)
+
+    try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition
-    const recognition = new SpeechRecognition()
-    recognitionRef.current = recognition
+      const w = window as any
+      const SpeechRecognition = w.webkitSpeechRecognition || w.SpeechRecognition
+      if (typeof SpeechRecognition !== 'function') {
+        setVoiceUiError(VOICE_BROWSER_SUPPORT_MESSAGE)
+        return
+      }
 
-    recognition.continuous = true
-    recognition.interimResults = true
-    recognition.lang = 'en-US'
+      const recognition = new SpeechRecognition()
+      recognitionRef.current = recognition
 
-    let finalTranscript = pasteText
+      recognition.continuous = true
+      recognition.interimResults = true
+      recognition.lang = 'en-US'
 
-    recognition.onresult = (event: { results: SpeechRecognitionResultList; resultIndex: number }) => {
-      let interim = ''
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        const t = event.results[i][0].transcript
-        if (event.results[i].isFinal) {
-          finalTranscript += (finalTranscript ? ' ' : '') + t
+      let finalTranscript = pasteText
+
+      recognition.onresult = (event: { results: SpeechRecognitionResultList; resultIndex: number }) => {
+        let interim = ''
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const t = event.results[i][0].transcript
+          if (event.results[i].isFinal) {
+            finalTranscript += (finalTranscript ? ' ' : '') + t
+          } else {
+            interim = t
+          }
+        }
+        setPasteText(finalTranscript + (interim ? ' ' + interim : ''))
+      }
+
+      recognition.onerror = (event: Event) => {
+        setIsListening(false)
+        const code =
+          'error' in event ? String((event as SpeechRecognitionErrorEvent).error) : ''
+        if (code === 'no-speech' || code === 'aborted') {
+          setVoiceUiError('No speech was detected. Try again, or use the Paste tab to enter your text.')
+        } else if (code === 'not-allowed' || code === 'service-not-allowed') {
+          setVoiceUiError(
+            'Microphone access was blocked. Allow the microphone in your browser settings, or use the Paste tab.'
+          )
         } else {
-          interim = t
+          setVoiceUiError(VOICE_BROWSER_SUPPORT_MESSAGE)
         }
       }
-      setPasteText(finalTranscript + (interim ? ' ' + interim : ''))
+      recognition.onend = () => setIsListening(false)
+
+      recognition.start()
+      setIsListening(true)
+    } catch {
+      setIsListening(false)
+      setVoiceUiError(VOICE_BROWSER_SUPPORT_MESSAGE)
     }
-
-    recognition.onerror = () => setIsListening(false)
-    recognition.onend = () => setIsListening(false)
-
-    recognition.start()
-    setIsListening(true)
   }, [isListening, pasteText, voiceSupported])
 
   const handleTranslate = async () => {
@@ -123,8 +159,16 @@ export default function HomePage() {
       if (!res.ok) throw new Error(data.error)
       setResult(data)
       setTimeout(() => {
-        outputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        outputRef.current?.focus()
+        const el = resultsHeadingRef.current
+        if (!el) return
+        const reduceMotion =
+          typeof window !== 'undefined' &&
+          window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        el.scrollIntoView({
+          behavior: reduceMotion ? 'instant' : 'smooth',
+          block: 'start',
+        })
+        el.focus()
       }, 100)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
@@ -490,6 +534,7 @@ export default function HomePage() {
             {tab === 'upload' && (
               <div role="tabpanel" id="panel-upload" aria-labelledby="tab-upload" style={{ marginBottom: '1rem' }}>
                 <div
+                  className="upload-drop-zone"
                   style={{
                     border: '2px dashed var(--border)',
                     borderRadius: 'var(--radius-md)',
@@ -555,7 +600,10 @@ export default function HomePage() {
                   )}
                 </div>
                 {uploadError && (
-                  <p style={{ color: 'var(--urgent-text)', fontSize: '0.875rem', marginTop: '0.5rem' }}>
+                  <p
+                    role="alert"
+                    style={{ color: 'var(--urgent-text)', fontSize: '0.875rem', marginTop: '0.5rem' }}
+                  >
                     {uploadError}
                   </p>
                 )}
@@ -572,6 +620,23 @@ export default function HomePage() {
               <div role="tabpanel" id="panel-voice" aria-labelledby="tab-voice" style={{ marginBottom: '1rem' }}>
                 {voiceSupported ? (
                   <>
+                    {voiceUiError && (
+                      <div
+                        role="alert"
+                        style={{
+                          marginBottom: '1rem',
+                          padding: '0.875rem 1rem',
+                          background: 'var(--warning-bg)',
+                          border: '1px solid var(--warning-border)',
+                          borderRadius: 'var(--radius-md)',
+                          color: 'var(--warning-text)',
+                          fontSize: '0.9375rem',
+                          textAlign: 'center',
+                        }}
+                      >
+                        {voiceUiError}
+                      </div>
+                    )}
                     <div
                       style={{
                         display: 'flex',
@@ -619,6 +684,7 @@ export default function HomePage() {
                   </>
                 ) : (
                   <div
+                    role="status"
                     style={{
                       background: 'var(--surface-2)',
                       borderRadius: 'var(--radius-md)',
@@ -627,9 +693,9 @@ export default function HomePage() {
                       color: 'var(--text-secondary)',
                     }}
                   >
-                    <p>Voice input is not supported in this browser.</p>
+                    <p>{VOICE_BROWSER_SUPPORT_MESSAGE}</p>
                     <p style={{ fontSize: '0.875rem', marginTop: '0.5rem' }}>
-                      Please use Chrome or Edge, or paste your text directly.
+                      Use the Paste tab to type or paste your document instead.
                     </p>
                   </div>
                 )}
@@ -978,7 +1044,23 @@ export default function HomePage() {
 
         {/* Output section */}
         {result && (
-          <div ref={outputRef} tabIndex={-1}>
+          <div>
+            <h2
+              ref={resultsHeadingRef}
+              id="translation-results-heading"
+              tabIndex={-1}
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+                letterSpacing: '0.12em',
+                fontWeight: 600,
+                color: 'var(--text-muted)',
+                margin: '0 0 1rem',
+                textTransform: 'uppercase',
+              }}
+            >
+              Translation results
+            </h2>
             {/* Summary line */}
             <div
               style={{
@@ -1227,7 +1309,10 @@ export default function HomePage() {
                 onRetranslate={() => {
                   setResult(null)
                   setShareUrl(null)
-                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                  const reduceMotion =
+                    typeof window !== 'undefined' &&
+                    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+                  window.scrollTo({ top: 0, behavior: reduceMotion ? 'instant' : 'smooth' })
                 }}
               />
             </div>

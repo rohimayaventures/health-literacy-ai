@@ -85,7 +85,7 @@ healthliteracy-ai/
 The system prompt instructs the model to:
 
 - Never use jargon without immediately explaining it in plain terms in the same sentence
-- Rewrite at the selected reading level (5th, 8th, or college)
+- Rewrite at the selected detail level (Simple, Clear, or Complete — routed internally as distinct prompt instructions)
 - Preserve every piece of critical information — diagnoses, medications, dosages, follow-up dates, warning signs
 - Flag urgent items as a structured array of action-oriented sentences surfaced above the translation
 - Use warm, reassuring tone ("your care team says..." not "you have...")
