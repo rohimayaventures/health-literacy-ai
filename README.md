@@ -11,8 +11,8 @@ Built by [Hannah Kraulik Pagade](https://rohimaya.ai) — clinical AI from the f
 ## What it does
 
 - **Three input methods** — paste text, upload a PDF, or speak your document aloud using your browser's microphone
-- **Reading level selector** — 5th Grade (simple), 8th Grade (moderate), College (thorough)
-- **Eight languages** — English, Spanish, Haitian Creole, Portuguese, French, Mandarin, Vietnamese, Tagalog
+- **Reading level selector** — Simple, Clear, Complete (patient-friendly detail levels)
+- **Twelve languages** — English, Spanish, Mandarin, Arabic, French, Portuguese, Vietnamese, Korean, Hindi, Russian, Tagalog, Japanese
 - **Urgent flag cards** — follow-up dates, new medications, warning signs, and care instructions surfaced at the top in clear visual cards
 - **Side-by-side view** — original clinical text on the left, plain-language translation on the right
 - **Copy and share** — copy translation to clipboard or generate a shareable URL via Supabase-persisted sessions
@@ -40,9 +40,9 @@ No login required. No data sold. Free to use.
 
 **Candlelight Clarity** — a patient-facing palette distinct from Rohimaya Health AI's Meridian Oracle system.
 
-- Background: `#FAFAF8` (warm off-white)
-- Primary: `#2C7A6E` (forest teal)
-- Accent: `#C2662B` (warm terracotta)
+- Background: `#F4EFE6` (warm cream)
+- Primary: `#0F3D34` (forest green)
+- Accent: `#D4882A` (warm amber)
 - Typography: Cormorant Garamond (display) + DM Sans (body) + DM Mono (labels)
 - WCAG AA compliant throughout
 
@@ -55,6 +55,7 @@ healthliteracy-ai/
 ├── app/
 │   ├── api/
 │   │   ├── translate/route.ts     Claude API — translates clinical text
+│   │   ├── verify/route.ts        Quality audit — checks for omissions/inaccuracies
 │   │   ├── parse-pdf/route.ts     PDF text extraction via pdf-parse
 │   │   └── share/route.ts         GET and POST for Supabase sessions
 │   ├── share/[id]/
@@ -66,8 +67,11 @@ healthliteracy-ai/
 ├── lib/
 │   ├── types.ts                   Shared TypeScript interfaces
 │   ├── system-prompt.ts           Claude system prompt (production)
-│   └── supabase.ts                Supabase client
-├── supabase-schema.sql            Run once to set up the database
+│   ├── supabase.ts                Supabase client
+│   ├── validators.ts              Zod schemas for API request validation
+│   ├── rate-limit.ts              In-memory rate limiting for API routes
+│   └── anthropic.ts               Claude client with timeout and retry
+├── supabase-migrations/         SQL migrations for sessions (run files in timestamp order)
 ├── .env.example                   Environment variable template
 ├── next.config.js
 ├── tailwind.config.ts
@@ -93,10 +97,11 @@ The system prompt instructs the model to:
 
 ## Roadmap
 
-- [ ] Reverse-check feature: "Did I get everything right?" — Claude verifies the translation against the original for omissions
+- [x] Reverse-check feature: "Want a second check?" — Claude verifies the translation against the original for omissions
 - [ ] Audio playback of the translation (Web Speech Synthesis API)
 - [ ] Scanned PDF support via OCR
 - [ ] Provider portal: clinicians can generate share links to send to patients
+- [x] Session expiry: share links expire after 90 days to reduce PHI exposure
 
 ---
 

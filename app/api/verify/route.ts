@@ -1,7 +1,7 @@
-import Anthropic from '@anthropic-ai/sdk'
 import { NextRequest, NextResponse } from 'next/server'
-
-const client = new Anthropic()
+import { createMessageWithRetry } from '@/lib/anthropic'
+import { verifySchema } from '@/lib/validators'
+import { rateLimit, getIdentifier } from '@/lib/rate-limit'
 
 const VERIFY_SYSTEM_PROMPT = `You are a clinical translation quality auditor for HealthLiteracy AI. Your job is to compare an original clinical document against a plain-language translation and identify anything that was omitted or meaningfully changed.
 
@@ -39,16 +39,30 @@ confidence levels:
 - "medium": the document was complex or ambiguous and there is some chance of false positives or false negatives
 - "low": the document was very long, highly technical, or structured in a way that made comparison difficult`
 
+const limiter = rateLimit({ windowMs: 60_000, maxRequests: 15 })
+
 export async function POST(req: NextRequest) {
+  const id = getIdentifier(req)
+  const limit = limiter(id)
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please wait a moment and try again.' },
+      {
+        status: 429,
+        headers: limit.retryAfter ? { 'Retry-After': String(limit.retryAfter) } : {},
+      }
+    )
+  }
+
   try {
-    const { original, translation } = (await req.json()) as {
-      original: string
-      translation: string
+    const body = await req.json()
+    const parsed = verifySchema.safeParse(body)
+    if (!parsed.success) {
+      const msg = parsed.error.issues[0]?.message ?? 'Invalid request'
+      return NextResponse.json({ error: msg }, { status: 400 })
     }
 
-    if (!original?.trim() || !translation?.trim()) {
-      return NextResponse.json({ error: 'Missing original or translation' }, { status: 400 })
-    }
+    const { original, translation } = parsed.data
 
     const userPrompt = `ORIGINAL CLINICAL DOCUMENT:
 ---
@@ -62,7 +76,7 @@ ${translation.slice(0, 8000)}
 
 Check the translation against the original. Identify any critical clinical information that was omitted or meaningfully changed. Return only the JSON object.`
 
-    const message = await client.messages.create({
+    const message = await createMessageWithRetry({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 1024,
       system: VERIFY_SYSTEM_PROMPT,
@@ -74,19 +88,19 @@ Check the translation against the original. Identify any critical clinical infor
       throw new Error('Unexpected response type from Claude')
     }
 
-    let parsed
+    let parsedJson
     try {
       const raw = content.text.replace(/```json\n?|\n?```/g, '').trim()
-      parsed = JSON.parse(raw)
+      parsedJson = JSON.parse(raw)
     } catch {
       throw new Error('Failed to parse verification response')
     }
 
     return NextResponse.json({
-      passed: Boolean(parsed.passed),
-      confidence: parsed.confidence ?? 'medium',
-      omissions: Array.isArray(parsed.omissions) ? parsed.omissions : [],
-      inaccuracies: Array.isArray(parsed.inaccuracies) ? parsed.inaccuracies : [],
+      passed: Boolean(parsedJson.passed),
+      confidence: parsedJson.confidence ?? 'medium',
+      omissions: Array.isArray(parsedJson.omissions) ? parsedJson.omissions : [],
+      inaccuracies: Array.isArray(parsedJson.inaccuracies) ? parsedJson.inaccuracies : [],
     })
   } catch (error) {
     console.error('[verify] error:', error)

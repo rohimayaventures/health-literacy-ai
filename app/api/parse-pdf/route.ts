@@ -1,8 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { rateLimit, getIdentifier } from '@/lib/rate-limit'
 
 export const runtime = 'nodejs'
 
+const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
+const limiter = rateLimit({ windowMs: 60_000, maxRequests: 30 })
+
 export async function POST(req: NextRequest) {
+  const id = getIdentifier(req)
+  const limit = limiter(id)
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: 'Too many uploads. Please wait a moment and try again.' },
+      {
+        status: 429,
+        headers: limit.retryAfter ? { 'Retry-After': String(limit.retryAfter) } : {},
+      }
+    )
+  }
+
   try {
     const formData = await req.formData()
     const file = formData.get('file') as File | null
@@ -19,8 +35,7 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const MAX_SIZE = 10 * 1024 * 1024
-    if (file.size > MAX_SIZE) {
+    if (file.size > MAX_FILE_SIZE) {
       return NextResponse.json(
         { error: 'File is too large. Please upload a file under 10MB.' },
         { status: 400 }

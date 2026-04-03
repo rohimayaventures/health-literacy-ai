@@ -154,6 +154,7 @@ export default function HomePage() {
   const handleShare = async () => {
     if (!result || sharing) return
     setSharing(true)
+    setError(null)
     try {
       const res = await fetch('/api/share', {
         method: 'POST',
@@ -168,16 +169,17 @@ export default function HomePage() {
         }),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error)
+      if (!res.ok) throw new Error(data.error ?? 'Failed to create share link')
       const url = `${window.location.origin}/share/${data.id}`
       setShareUrl(url)
       try {
         await navigator.clipboard.writeText(url)
       } catch {
-        setError("Couldn't copy automatically. Long-press the link to copy it.")
+        setError("Share link created, but we couldn't copy it automatically. Long-press the link below to copy it.")
       }
-    } catch {
-      setError('Could not create share link. Please try again.')
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Could not create share link. Please try again.'
+      setError(msg)
     } finally {
       setSharing(false)
     }
@@ -186,6 +188,7 @@ export default function HomePage() {
   const handleDownloadPDF = async () => {
     if (!result || downloading) return
     setDownloading(true)
+    setError(null)
     try {
       await generateTranslationPDF({
         urgentItems: result.urgentItems,
@@ -196,6 +199,7 @@ export default function HomePage() {
       })
     } catch (err) {
       console.error('PDF generation failed:', err)
+      setError('Could not create PDF. Try copying the translation instead, or use the share link.')
     } finally {
       setDownloading(false)
     }
@@ -265,7 +269,7 @@ export default function HomePage() {
             minHeight: '230px',
           }}
         >
-          <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+          <div className="hero-rings" style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
             <div style={{ position: 'absolute', width: '300px', height: '300px', top: '50%', left: '50%', border: '1px solid var(--hero-border-ring)', borderRadius: '50%', transform: 'translate(-50%, -50%)', animation: 'hlPulseRing 3.6s ease-in-out infinite', willChange: 'transform, opacity' }} />
             <div style={{ position: 'absolute', width: '500px', height: '500px', top: '50%', left: '50%', border: '1px solid var(--hero-border-ring)', borderRadius: '50%', transform: 'translate(-50%, -50%)', animation: 'hlPulseRingB 5s ease-in-out infinite 0.6s', willChange: 'transform, opacity' }} />
             <div style={{ position: 'absolute', width: '700px', height: '700px', top: '50%', left: '50%', border: '1px solid var(--hero-border-ring)', borderRadius: '50%', transform: 'translate(-50%, -50%)', animation: 'hlPulseRingB 6.4s ease-in-out infinite 1.2s', willChange: 'transform, opacity' }} />
@@ -275,6 +279,7 @@ export default function HomePage() {
           </div>
 
           <div
+            className="hero-inner"
             style={{
               position: 'relative',
               zIndex: 2,
@@ -408,6 +413,8 @@ export default function HomePage() {
             {/* Input tabs */}
             <div
               className="tab-band-outer"
+              role="tablist"
+              aria-label="Input method"
               style={{
                 background: 'var(--primary-dark)',
                 padding: '10px 12px',
@@ -416,10 +423,30 @@ export default function HomePage() {
                 marginBottom: '1.25rem',
               }}
             >
-              {(['paste', 'upload', 'voice'] as InputTab[]).map((t) => (
+              {(['paste', 'upload', 'voice'] as InputTab[]).map((t, i) => (
                 <button
                   key={t}
+                  role="tab"
+                  id={`tab-${t}`}
+                  aria-selected={tab === t}
+                  aria-controls={`panel-${t}`}
+                  tabIndex={tab === t ? 0 : -1}
                   onClick={() => setTab(t)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'ArrowLeft' && i > 0) {
+                      e.preventDefault()
+                      setTab((['paste', 'upload', 'voice'] as InputTab[])[i - 1])
+                    } else if (e.key === 'ArrowRight' && i < 2) {
+                      e.preventDefault()
+                      setTab((['paste', 'upload', 'voice'] as InputTab[])[i + 1])
+                    } else if (e.key === 'Home') {
+                      e.preventDefault()
+                      setTab('paste')
+                    } else if (e.key === 'End') {
+                      e.preventDefault()
+                      setTab('voice')
+                    }
+                  }}
                   style={{
                     flex: 1,
                     display: 'flex',
@@ -448,6 +475,7 @@ export default function HomePage() {
 
             {/* Paste tab */}
             {tab === 'paste' && (
+              <div role="tabpanel" id="panel-paste" aria-labelledby="tab-paste">
               <textarea
                 placeholder="Paste the text from your medical paperwork here..."
                 value={pasteText}
@@ -455,11 +483,12 @@ export default function HomePage() {
                 style={{ minHeight: '200px', marginBottom: '1rem' }}
                 aria-label="Clinical document text input"
               />
+              </div>
             )}
 
             {/* Upload tab */}
             {tab === 'upload' && (
-              <div style={{ marginBottom: '1rem' }}>
+              <div role="tabpanel" id="panel-upload" aria-labelledby="tab-upload" style={{ marginBottom: '1rem' }}>
                 <div
                   style={{
                     border: '2px dashed var(--border)',
@@ -540,7 +569,7 @@ export default function HomePage() {
 
             {/* Voice tab */}
             {tab === 'voice' && (
-              <div style={{ marginBottom: '1rem' }}>
+              <div role="tabpanel" id="panel-voice" aria-labelledby="tab-voice" style={{ marginBottom: '1rem' }}>
                 {voiceSupported ? (
                   <>
                     <div
@@ -608,7 +637,7 @@ export default function HomePage() {
             )}
 
             {/* Options row */}
-            <div
+            <fieldset
               style={{
                 display: 'flex',
                 flexWrap: 'wrap',
@@ -616,10 +645,17 @@ export default function HomePage() {
                 alignItems: 'flex-end',
                 paddingTop: '1rem',
                 borderTop: '1px solid var(--border)',
+                border: 'none',
+                margin: 0,
+                paddingLeft: 0,
+                paddingRight: 0,
+                paddingBottom: 0,
               }}
+              aria-describedby="detail-level-desc language-desc"
             >
+              <legend className="sr-only">Translation options</legend>
               {/* Reading level */}
-              <div style={{ flex: '1 1 auto' }}>
+              <div id="detail-level-desc" style={{ flex: '1 1 auto' }}>
                 <label
                   style={{
                     display: 'block',
@@ -670,7 +706,7 @@ export default function HomePage() {
               </div>
 
               {/* Language */}
-              <div style={{ flex: '1 1 auto' }}>
+              <div id="language-desc" style={{ flex: '1 1 auto' }}>
                 <label
                   htmlFor="language-select"
                   style={{
@@ -727,7 +763,7 @@ export default function HomePage() {
                   'Translate'
                 )}
               </button>
-            </div>
+            </fieldset>
 
             {error && !loading && (
               <div
@@ -1138,6 +1174,23 @@ export default function HomePage() {
                 Start Over
               </button>
             </div>
+
+            {error && (
+              <div
+                role="alert"
+                style={{
+                  marginTop: '1rem',
+                  padding: '0.875rem 1rem',
+                  background: 'var(--urgent-bg)',
+                  border: '1px solid var(--urgent-border)',
+                  borderRadius: 'var(--radius-md)',
+                  color: 'var(--urgent-text)',
+                  fontSize: '0.9375rem',
+                }}
+              >
+                {error}
+              </div>
+            )}
 
             {shareUrl && (
               <div

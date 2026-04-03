@@ -9,6 +9,7 @@ export default function ShareView({ id }: { id: string }) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [downloading, setDownloading] = useState(false)
+  const [pdfError, setPdfError] = useState<string | null>(null)
 
   useEffect(() => {
     fetch(`/api/share?id=${id}`)
@@ -57,6 +58,7 @@ export default function ShareView({ id }: { id: string }) {
   const handleDownloadPDF = async () => {
     if (downloading) return
     setDownloading(true)
+    setPdfError(null)
     try {
       await generateTranslationPDF({
         urgentItems: session.urgentItems,
@@ -67,6 +69,7 @@ export default function ShareView({ id }: { id: string }) {
       })
     } catch (err) {
       console.error('PDF generation failed:', err)
+      setPdfError('Could not create PDF. Try copying the translation text instead.')
     } finally {
       setDownloading(false)
     }
@@ -188,6 +191,23 @@ export default function ShareView({ id }: { id: string }) {
             {downloading ? 'Generating PDF...' : 'Download PDF'}
           </button>
         </div>
+
+        {pdfError && (
+          <div
+            role="alert"
+            style={{
+              marginBottom: '1rem',
+              padding: '0.875rem 1rem',
+              background: 'var(--urgent-bg)',
+              border: '1px solid var(--urgent-border)',
+              borderRadius: 'var(--radius-md)',
+              color: 'var(--urgent-text)',
+              fontSize: '0.9375rem',
+            }}
+          >
+            {pdfError}
+          </div>
+        )}
 
         <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', textAlign: 'center' }}>
           This translation was created with HealthLiteracy AI. It is for patient education only.{' '}

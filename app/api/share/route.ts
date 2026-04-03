@@ -1,10 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
-import { ReadingLevel, Language } from '@/lib/types'
+import { sharePostSchema } from '@/lib/validators'
+import { rateLimit, getIdentifier } from '@/lib/rate-limit'
+
+const SESSION_TTL_DAYS = 90
+
+const limiter = rateLimit({ windowMs: 60_000, maxRequests: 30 })
 
 export async function POST(req: NextRequest) {
+  const id = getIdentifier(req)
+  const limit = limiter(id)
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please wait a moment and try again.' },
+      {
+        status: 429,
+        headers: limit.retryAfter ? { 'Retry-After': String(limit.retryAfter) } : {},
+      }
+    )
+  }
+
   try {
     const body = await req.json()
+    const parsed = sharePostSchema.safeParse(body)
+    if (!parsed.success) {
+      const msg = parsed.error.issues[0]?.message ?? 'Invalid request'
+      return NextResponse.json({ error: msg }, { status: 400 })
+    }
+
     const {
       original,
       translation,
@@ -12,18 +35,10 @@ export async function POST(req: NextRequest) {
       summaryLine,
       readingLevel,
       language,
-    } = body as {
-      original: string
-      translation: string
-      urgentItems: string[]
-      summaryLine: string
-      readingLevel: ReadingLevel
-      language: Language
-    }
+    } = parsed.data
 
-    if (!translation || !original) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
-    }
+    const expiresAt = new Date()
+    expiresAt.setDate(expiresAt.getDate() + SESSION_TTL_DAYS)
 
     const { data, error } = await supabase
       .from('sessions')
@@ -34,6 +49,7 @@ export async function POST(req: NextRequest) {
         summary_line: summaryLine ?? '',
         reading_level: readingLevel,
         language,
+        expires_at: expiresAt.toISOString(),
       })
       .select('id')
       .single()
@@ -67,6 +83,11 @@ export async function GET(req: NextRequest) {
 
     if (error || !data) {
       return NextResponse.json({ error: 'Session not found' }, { status: 404 })
+    }
+
+    const expiresAt = data.expires_at ? new Date(data.expires_at) : null
+    if (expiresAt && expiresAt < new Date()) {
+      return NextResponse.json({ error: 'This share link has expired' }, { status: 410 })
     }
 
     return NextResponse.json({
