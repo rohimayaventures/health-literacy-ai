@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     siteName: 'HealthLiteracy AI',
   },
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_BASE_URL ?? 'https://healthliteracy.vercel.app'
+    process.env.NEXT_PUBLIC_BASE_URL ?? 'https://literacy.rohimaya.ai'
   ),
 }
 

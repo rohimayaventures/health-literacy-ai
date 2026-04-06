@@ -67,18 +67,30 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
+  const id = getIdentifier(req)
+  const limit = limiter(id)
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please wait a moment and try again.' },
+      {
+        status: 429,
+        headers: limit.retryAfter ? { 'Retry-After': String(limit.retryAfter) } : {},
+      }
+    )
+  }
+
   try {
     const { searchParams } = new URL(req.url)
-    const id = searchParams.get('id')
+    const sessionId = searchParams.get('id')
 
-    if (!id) {
+    if (!sessionId) {
       return NextResponse.json({ error: 'No session ID provided' }, { status: 400 })
     }
 
     const { data, error } = await supabase
       .from('sessions')
       .select('*')
-      .eq('id', id)
+      .eq('id', sessionId)
       .single()
 
     if (error || !data) {
