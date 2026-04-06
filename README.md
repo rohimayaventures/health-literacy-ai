@@ -11,11 +11,13 @@ Built by [Hannah Kraulik Pagade](https://rohimaya.ai) — clinical AI from the f
 ## What it does
 
 - **Three input methods** — paste text, upload a PDF, or speak your document aloud using your browser's microphone
+- **PDF and .txt upload** — PDF and .txt upload supported via server-side text extraction. Scanned or image-only PDFs require paste or voice input.
 - **Reading level selector** — Simple, Clear, Complete (patient-friendly detail levels)
 - **Twelve languages** — English, Spanish, Mandarin, Arabic, French, Portuguese, Vietnamese, Korean, Hindi, Russian, Tagalog, Japanese
 - **Urgent flag cards** — follow-up dates, new medications, warning signs, and care instructions surfaced at the top in clear visual cards
 - **Side-by-side view** — original clinical text on the left, plain-language translation on the right
 - **Copy and share** — copy translation to clipboard or generate a shareable URL via Supabase-persisted sessions
+- **Share sessions & privacy** — Each saved session row in Supabase includes a **90-day `expires_at`** timestamp. After that date, fetching the share URL returns **HTTP 410 Gone** (expired), not a live translation. That TTL is intentional **privacy-by-design** for a **no-login** product that still handles **clinical text**: links work long enough to coordinate care, without leaving those passages publicly retrievable indefinitely.
 
 No login required. No data sold. Free to use.
 
@@ -99,7 +101,6 @@ The system prompt instructs the model to:
 
 - [x] Reverse-check feature: "Want a second check?" — Claude verifies the translation against the original for omissions
 - [ ] Audio playback of the translation (Web Speech Synthesis API)
-- [ ] Scanned PDF support via OCR
 - [ ] Provider portal: clinicians can generate share links to send to patients
 - [x] Session expiry: share links expire after 90 days to reduce PHI exposure
 
@@ -109,7 +110,7 @@ The system prompt instructs the model to:
 
 HealthLiteracy AI is a portfolio project under [Rohimaya Health AI](https://rohimaya.ai), built by [Hannah Kraulik Pagade](https://pagadeventures.com) — CEO of Pagade Ventures, Licensed Practical Nurse, and MS AI/ML candidate at CU Boulder.
 
-This project exists because discharge instructions written at a clinical level do not help a patient who reads at a normal level, speaks Haitian Creole at home, and is scared. That gap is preventable with a two-second API call.
+This project exists because discharge instructions written at a clinical level do not help a patient who reads at a normal level, speaks Vietnamese or Tagalog at home, and is scared. That gap is preventable with a two-second API call.
 
 ---
 

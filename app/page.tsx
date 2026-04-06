@@ -596,6 +596,10 @@ export default function HomePage() {
                       <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginTop: '4px' }}>
                         PDF or .txt, up to 10MB
                       </p>
+                      <p style={{ color: 'var(--text-muted)', fontSize: '0.8125rem', marginTop: '10px', lineHeight: 1.45 }}>
+                        PDF and .txt upload supported via server-side text extraction. Scanned or image-only PDFs
+                        require paste or voice input.
+                      </p>
                     </>
                   )}
                 </div>

@@ -60,7 +60,10 @@ export async function POST(req: NextRequest) {
 
     if (!text || text.length < 20) {
       return NextResponse.json(
-        { error: 'Could not extract text from this PDF. It may be a scanned image. Please try copying and pasting the text directly.' },
+        {
+          error:
+            'Could not extract text from this PDF. PDF and .txt upload supported via server-side text extraction. Scanned or image-only PDFs require paste or voice input.',
+        },
         { status: 422 }
       )
     }
