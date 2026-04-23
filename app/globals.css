@@ -56,6 +56,7 @@
 
   --shadow-card: 0 20px 60px rgba(0,0,0,0.4);
   --shadow-sm: 0 1px 3px rgba(26,20,16,0.08);
+  --shadow-float: 0 12px 24px rgba(15, 61, 52, 0.2);
 }
 
 * {
@@ -430,20 +431,38 @@ textarea {
   border-radius: 999px;
 }
 
-/* Mobile padding (responsive overrides only; no page.tsx inline changes) */
+/* Responsive layout alignment */
 @media (max-width: 600px) {
-  header[style*="padding: 0 2rem"],
-  header[style*="padding:0 2rem"] {
+  .app-header {
     padding: 0 1rem !important;
   }
 
-  section[style*="padding: 3rem 2rem 2.5rem"],
-  section[style*="padding:3rem 2rem 2.5rem"] {
-    padding: 1.75rem 1rem 1.5rem !important;
+  .hero-section {
+    padding: 2rem 1rem 0 !important;
+    min-height: 190px !important;
   }
 
-  main#main-content {
+  .card-outer-wrap {
+    padding: 0 1rem 2rem !important;
+  }
+
+  .main-content {
     padding: 1rem !important;
+  }
+
+  .trust-section {
+    padding: 0 1rem 2rem !important;
+  }
+
+  .verify-section {
+    padding: 1rem !important;
+  }
+
+  .footer-emergency,
+  .footer-disclaimer,
+  .footer-bottom {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
   }
 }
 
@@ -461,14 +480,150 @@ textarea {
 
 @media (max-width: 600px) {
   .nav-tagline { display: none; }
-  .hero-section { padding: 2rem 1rem 0 !important; min-height: 190px !important; }
-  .card-outer-wrap { padding: 0 1.25rem 2rem; }
   .stats-row { flex-direction: column; gap: 2rem; padding: 2.5rem 1.25rem; }
   .stat:not(:last-child)::after { display: none; }
   .trust-cards-row { flex-direction: column; }
   .results-panels { flex-direction: column; }
   .actions-row { flex-direction: column; align-items: stretch; }
   .actions-left { flex-direction: column; }
+  .tab-band-outer button { font-size: 12px !important; padding: 8px 10px !important; }
+  .voice-control-wrap { padding: 1.25rem !important; }
+  .voice-mic-btn {
+    width: 64px !important;
+    height: 64px !important;
+    align-self: center;
+  }
+  .voice-mic-copy {
+    text-align: center;
+    max-width: 22rem;
+  }
+}
+
+/* iPhone Pro / standard widths (~390px) */
+@media (max-width: 390px) {
+  html {
+    font-size: 15px;
+  }
+
+  .app-header {
+    min-height: 0 !important;
+    height: auto !important;
+    padding-top: 0.65rem !important;
+    padding-bottom: 0.65rem !important;
+  }
+
+  .hero-section {
+    min-height: 0 !important;
+    padding: 1.5rem 0.875rem 0 !important;
+  }
+
+  /* Hero copy uses inline font sizes; override for small viewports */
+  .hero-section .hero-inner > div:first-child {
+    font-size: 9px !important;
+    padding: 5px 12px !important;
+    letter-spacing: 0.1em !important;
+  }
+
+  .hero-section .hero-inner h1,
+  .hero-section .hero-inner h1 + span {
+    font-size: clamp(2rem, 8vw, 2.85rem) !important;
+  }
+
+  .hero-section .hero-inner > p {
+    font-size: 1rem !important;
+    line-height: 1.65 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .hero-section .hero-inner > div:last-child {
+    margin-bottom: 0.9rem !important;
+  }
+
+  .main-content {
+    padding: 0.75rem !important;
+  }
+
+  .card-outer-wrap {
+    padding: 0 0.75rem 1.5rem !important;
+  }
+
+  .card-outer-wrap .card {
+    padding: 1.15rem !important;
+  }
+
+  .tab-band-outer {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    padding: 8px 8px !important;
+  }
+
+  .tab-band-outer button {
+    min-height: 44px;
+    font-size: 11px !important;
+    padding: 8px 6px !important;
+  }
+
+  .stats-row {
+    padding: 2.25rem 0.9rem !important;
+  }
+
+  .trust-section {
+    padding: 0 0.75rem 2.25rem !important;
+  }
+
+  .verify-section {
+    padding: 0.875rem !important;
+  }
+
+  .translation-content p {
+    font-size: 0.9375rem;
+  }
+}
+
+/* iPhone SE / mini (~375px) */
+@media (max-width: 375px) {
+  html {
+    font-size: 15px;
+  }
+
+  .hero-section .hero-inner h1,
+  .hero-section .hero-inner h1 + span {
+    font-size: clamp(1.85rem, 7.5vw, 2.6rem) !important;
+  }
+
+  .hero-section .hero-inner > p {
+    font-size: 0.95rem !important;
+  }
+
+  .card-outer-wrap .card {
+    padding: 1rem !important;
+  }
+
+  .tab-band-outer button {
+    font-size: 10.5px !important;
+  }
+
+  .tab-band-outer button span,
+  .tab-band-outer button {
+    line-height: 1.2;
+  }
+
+  .voice-mic-btn {
+    width: 60px !important;
+    height: 60px !important;
+  }
+
+  .card-outer-wrap fieldset {
+    align-items: stretch !important;
+  }
+
+  .card-outer-wrap .btn.btn-primary {
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
 @media print {

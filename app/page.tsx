@@ -265,6 +265,7 @@ export default function HomePage() {
     <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
       {/* Header */}
       <header
+        className="app-header"
         style={{
           background: 'var(--hero-bg)',
           borderBottom: '1px solid var(--hero-border-subtle)',
@@ -621,7 +622,13 @@ export default function HomePage() {
 
             {/* Voice tab */}
             {tab === 'voice' && (
-              <div role="tabpanel" id="panel-voice" aria-labelledby="tab-voice" style={{ marginBottom: '1rem' }}>
+              <div
+                role="tabpanel"
+                id="panel-voice"
+                aria-labelledby="tab-voice"
+                className="voice-panel"
+                style={{ marginBottom: '1rem' }}
+              >
                 {voiceSupported ? (
                   <>
                     {voiceUiError && (
@@ -642,6 +649,7 @@ export default function HomePage() {
                       </div>
                     )}
                     <div
+                      className="voice-control-wrap"
                       style={{
                         display: 'flex',
                         flexDirection: 'column',
@@ -651,6 +659,7 @@ export default function HomePage() {
                       }}
                     >
                       <button
+                        className="voice-mic-btn"
                         onClick={handleVoice}
                         style={{
                           width: '72px',
@@ -672,7 +681,7 @@ export default function HomePage() {
                       >
                         <MicIcon size={28} color="#fff" />
                       </button>
-                      <p style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem' }}>
+                      <p className="voice-mic-copy" style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem' }}>
                         {isListening ? 'Listening... tap to stop.' : 'Tap the microphone and speak your document aloud.'}
                       </p>
                     </div>
