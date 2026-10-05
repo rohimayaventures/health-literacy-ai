@@ -40,6 +40,18 @@ function isModelUnavailable(err: unknown): boolean {
   )
 }
 
+function usesTextOnlyThinking(model: string): boolean {
+  return model === 'claude-sonnet-5-5' || model.startsWith('claude-sonnet-5-5-')
+}
+
+export function getAssistantText(message: Anthropic.Message): string {
+  const block = message.content?.find((part) => part.type === 'text')
+  if (block && block.type === 'text') return block.text
+
+  const types = message.content?.map((part) => part.type).join(', ') || 'none'
+  throw new Error(`Unexpected response type from Claude (${types})`)
+}
+
 async function createWithModel(
   params: MessageParams,
   model: string
@@ -49,21 +61,19 @@ async function createWithModel(
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS)
     try {
-      const raw = await client.messages.create(
-        { ...params, model },
-        { signal: controller.signal }
-      )
+      const request = {
+        ...params,
+        model,
+        ...(usesTextOnlyThinking(model) ? { thinking: { type: 'between_tools' } } : {}),
+      } as Anthropic.MessageCreateParams
+
+      const raw = await client.messages.create(request, {
+        signal: controller.signal,
+      })
       clearTimeout(timeoutId)
 
       const message = raw as Anthropic.Message
-      const content = message.content?.[0]
-      if (!content) {
-        throw new Error('Empty response from Claude')
-      }
-      if (content.type !== 'text') {
-        throw new Error('Unexpected response type from Claude')
-      }
-
+      getAssistantText(message)
       return message
     } catch (err) {
       clearTimeout(timeoutId)

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createMessageWithRetry } from '@/lib/anthropic'
+import { createMessageWithRetry, getAssistantText } from '@/lib/anthropic'
 import { verifySchema } from '@/lib/validators'
 import { rateLimit, getIdentifier } from '@/lib/rate-limit'
 
@@ -82,14 +82,9 @@ Check the translation against the original. Identify any critical clinical infor
       messages: [{ role: 'user', content: userPrompt }],
     })
 
-    const content = message.content[0]
-    if (content.type !== 'text') {
-      throw new Error('Unexpected response type from Claude')
-    }
-
     let parsedJson
     try {
-      const raw = content.text.replace(/```json\n?|\n?```/g, '').trim()
+      const raw = getAssistantText(message).replace(/```json\n?|\n?```/g, '').trim()
       parsedJson = JSON.parse(raw)
     } catch {
       throw new Error('Failed to parse verification response')

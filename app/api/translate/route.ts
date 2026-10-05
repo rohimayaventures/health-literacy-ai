@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { SYSTEM_PROMPT } from '@/lib/system-prompt'
 import { ReadingLevel } from '@/lib/types'
-import { createMessageWithRetry } from '@/lib/anthropic'
+import { createMessageWithRetry, getAssistantText } from '@/lib/anthropic'
 import { translateSchema } from '@/lib/validators'
 import { rateLimit, getIdentifier } from '@/lib/rate-limit'
 
@@ -53,14 +53,9 @@ Respond with only the JSON object as specified. No preamble.`
       messages: [{ role: 'user', content: userPrompt }],
     })
 
-    const content = message.content[0]
-    if (content.type !== 'text') {
-      throw new Error('Unexpected response type from Claude')
-    }
-
     let parsedJson
     try {
-      const raw = content.text.replace(/```json\n?|\n?```/g, '').trim()
+      const raw = getAssistantText(message).replace(/```json\n?|\n?```/g, '').trim()
       parsedJson = JSON.parse(raw)
     } catch {
       throw new Error('Failed to parse Claude response as JSON')
