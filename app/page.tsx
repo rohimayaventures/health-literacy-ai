@@ -156,7 +156,16 @@ export default function HomePage() {
         body: JSON.stringify({ text, readingLevel, language }),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error)
+      if (!res.ok) {
+        if (res.status >= 500) {
+          throw new Error('We could not translate this right now. Please try again in a moment.')
+        }
+        throw new Error(
+          typeof data.error === 'string'
+            ? data.error
+            : 'We could not translate this right now. Please try again in a moment.'
+        )
+      }
       setResult(data)
       setTimeout(() => {
         const el = resultsHeadingRef.current
@@ -171,7 +180,17 @@ export default function HomePage() {
         el.focus()
       }, 100)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
+      const message = err instanceof Error ? err.message : ''
+      const safeClientMessage =
+        message.length > 0 &&
+        message.length < 240 &&
+        !message.includes('{') &&
+        !/req_|request_id|not_found|claude-/i.test(message)
+      setError(
+        safeClientMessage
+          ? message
+          : 'We could not translate this right now. Please try again in a moment.'
+      )
     } finally {
       setLoading(false)
     }

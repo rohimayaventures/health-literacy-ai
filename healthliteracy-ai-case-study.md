@@ -17,7 +17,7 @@
 | **Role** | Product design, conversation design, full-stack build |
 | **Timeline** | 2025 — Present |
 | **Key outcome** | Free, no-login patient document translation tool with twelve-language support, three reading levels, user-initiated AI verification, voice input, and 90-day shareable sessions |
-| **Stack** | Next.js 15 · TypeScript · Tailwind CSS v4 · Claude API (claude-sonnet-4-20250514) · Supabase · Zod · Vercel |
+| **Stack** | Next.js 15 · TypeScript · Tailwind CSS v4 · Claude API (claude-sonnet-5-5) · Supabase · Zod · Vercel |
 
 ---
 
@@ -115,7 +115,7 @@ The automatic version doubles latency and cost on every translation by default. 
 **Lesson:** "Automated" is not always more trustworthy. In a clinical context, making the verification visible and explicit builds more trust than running it silently.
 
 **Pivot 4 — Sonnet for clinical text**
-The original architecture spec called for Haiku as the default model for speed with Sonnet invoked when document complexity exceeded a threshold. The repo uses `claude-sonnet-4-20250514` for both the translate and verify calls with no model router.
+The original architecture spec called for Haiku as the default model for speed with Sonnet invoked when document complexity exceeded a threshold. The repo uses `ANTHROPIC_MODEL` (default `claude-sonnet-5-5`) for both the translate and verify calls. If that model returns a 404 or model-not-found error, the call retries once with `ANTHROPIC_FALLBACK_MODEL` (default `claude-haiku-4-5-20251001`).
 
 Clinical plain-language translation is not a context where the faster, cheaper model is the right default. The instruction set is complex: medical term explanation in the same clause, urgent item extraction as a structured array, attribution framing that prevents misreading as diagnosis, reading level adherence across three distinct instruction sets. Haiku produces acceptable results on simple documents. It produces less reliable results on dense clinical language. Sonnet is the right model for this use case until there is enough volume data to build a confident routing layer.
 
@@ -133,7 +133,7 @@ Clinical plain-language translation is not a context where the faster, cheaper m
 - Free
 
 ### Translation engine
-- Claude API (`claude-sonnet-4-20250514` for both translate and verify calls)
+- Claude API (`claude-sonnet-5-5` for both translate and verify calls)
 - Twelve languages: Arabic, French, Hindi, Japanese, Korean, Mandarin, Portuguese, Russian, Spanish, Tagalog, Vietnamese, English
 - Three reading levels: Simple, Clear, Complete
 - Medical term explanation built into every output
@@ -163,7 +163,7 @@ Clinical plain-language translation is not a context where the faster, cheaper m
 ### Infrastructure
 - Next.js 15, App Router, TypeScript
 - Tailwind CSS v4
-- Claude API (`claude-sonnet-4-20250514`)
+- Claude API (`claude-sonnet-5-5`)
 - Zod validation on API request bodies, manual validation on Claude responses, retry on transport failures
 - Rate limiting on translate, verify, share (POST and GET), and parse routes
 - Supabase with versioned SQL migrations, 90-day session expiry, 410 for expired links
@@ -175,7 +175,7 @@ Clinical plain-language translation is not a context where the faster, cheaper m
 
 | Component | Decision | Rationale |
 |---|---|---|
-| AI model | `claude-sonnet-4-20250514` for both translate and verify | Clinical plain-language translation requires reliable structured output across complex instruction sets. Sonnet is used for both passes. No Haiku default or model router currently implemented. |
+| AI model | `ANTHROPIC_MODEL` default `claude-sonnet-5-5`, fallback `claude-haiku-4-5-20251001` | Clinical plain-language translation uses Sonnet 5.5 for both passes. A retired or missing primary model retries once on the fallback model. |
 | Translation architecture | Two-pass: translate then user-initiated verify | One-pass has no error correction. Verify is explicit and on-demand, not automatic, to avoid doubling latency and cost on every free session. |
 | Urgent item extraction | Structured array output, separate from translation body | Urgency classification is a first-class output. The system prompt extracts urgency-flagged items before generating the translation body. |
 | Reading level system | Three tiers: Simple, Clear, Complete | Each tier has a distinct instruction set for sentence structure, explanation depth, and concept unpacking. Labels are plain language, not grade-level framing. |
@@ -262,13 +262,13 @@ The original spec called for Haiku by default with Sonnet escalation on complex 
 
 ### What shipped (grouped, for ShippedGrid)
 - **Input and access:** Paste, type, voice (Web Speech API), PDF and .txt upload. No login. No setup. Free. Mobile, tablet, and desktop.
-- **Translation engine:** Twelve languages. Simple, Clear, Complete reading levels. Medical term explanation. Attribution language. Claude Sonnet (`claude-sonnet-4-20250514`). Zod on request bodies, manual validation on Claude responses.
+- **Translation engine:** Twelve languages. Simple, Clear, Complete reading levels. Medical term explanation. Attribution language. Claude Sonnet (`claude-sonnet-5-5`). Zod on request bodies, manual validation on Claude responses.
 - **Verification:** User-initiated second Claude pass. Issue cards. THOROUGH CHECK / PARTIAL CHECK / QUICK CHECK badges. No auto re-render.
 - **Output features:** Urgent item extraction, side-by-side view, copy and share, PDF export with disclaimer, 90-day session persistence, 410 for expired links.
 - **Infrastructure:** Next.js 15, Tailwind CSS v4, Claude API, Zod, rate limiting, Supabase with versioned migrations, Vercel.
 
 ### Stack highlighted
-Claude API (two-pass architecture, `claude-sonnet-4-20250514`), Zod (API request validation), Supabase (90-day sessions, versioned migrations)
+Claude API (two-pass architecture, `claude-sonnet-5-5`), Zod (API request validation), Supabase (90-day sessions, versioned migrations)
 
 ### Stack standard
 Next.js 15, TypeScript, Tailwind CSS v4, Vercel
@@ -279,7 +279,7 @@ This project exists because discharge instructions written at a 12th-grade readi
 ### Honest summary
 
 **Technical understanding:**
-The two-pass Claude architecture uses `claude-sonnet-4-20250514` for both the translate and verify calls. There is no Haiku default or model router currently implemented. Sonnet is the right choice for this use case: the instruction set is complex across all three reading levels, urgent item extraction is a structured output contract, and translation quality on clinical terminology matters more than marginal latency savings from a smaller model. Zod validates incoming API request bodies. Claude JSON responses use manual validation with retry logic on transport failures, not on parse errors after text has been returned. Rate limiting is applied to translate, verify, share (POST and GET), and parse routes. Supabase sessions use 90-day expiry with versioned SQL migrations. Expired links return 410.
+The two-pass Claude architecture uses `ANTHROPIC_MODEL` (default `claude-sonnet-5-5`) for both the translate and verify calls, with one fallback to `ANTHROPIC_FALLBACK_MODEL` (default `claude-haiku-4-5-20251001`) when the primary model is not found. Sonnet is the right default for this use case: the instruction set is complex across all three reading levels, urgent item extraction is a structured output contract, and translation quality on clinical terminology matters more than marginal latency savings from a smaller model. Zod validates incoming API request bodies. Claude JSON responses use manual validation with retry logic on transport failures, not on parse errors after text has been returned. Rate limiting is applied to translate, verify, share (POST and GET), and parse routes. Supabase sessions use 90-day expiry with versioned SQL migrations. Expired links return 410.
 
 **Product understanding:**
 Every design constraint in this product came from a clinical observation. No login because patients who have just been discharged will not create an account. Urgent items first because the most safety-critical information must not be buried. Twelve languages at launch because deferring language support is a choice about whose needs wait. Verification user-initiated rather than automatic because doubling latency on every free translation prioritizes pipeline architecture over the patient's experience. The four pivot stories in Section 3 each represent a real product decision with a real tradeoff.

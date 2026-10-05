@@ -32,11 +32,30 @@ export function VerifyPanel({ original, translation, onRetranslate }: VerifyPane
         body: JSON.stringify({ original, translation }),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error)
+      if (!res.ok) {
+        if (res.status >= 500) {
+          throw new Error('We could not check this translation right now. Please try again in a moment.')
+        }
+        throw new Error(
+          typeof data.error === 'string'
+            ? data.error
+            : 'We could not check this translation right now. Please try again in a moment.'
+        )
+      }
       setResult(data)
       setStatus('done')
     } catch (err) {
-      setErrorMsg(err instanceof Error ? err.message : 'Verification failed')
+      const message = err instanceof Error ? err.message : ''
+      const safeClientMessage =
+        message.length > 0 &&
+        message.length < 240 &&
+        !message.includes('{') &&
+        !/req_|request_id|not_found|claude-/i.test(message)
+      setErrorMsg(
+        safeClientMessage
+          ? message
+          : 'We could not check this translation right now. Please try again in a moment.'
+      )
       setStatus('error')
     }
   }

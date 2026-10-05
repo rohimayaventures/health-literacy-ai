@@ -48,7 +48,6 @@ ${text.slice(0, 15000)}
 Respond with only the JSON object as specified. No preamble.`
 
     const message = await createMessageWithRetry({
-      model: 'claude-sonnet-4-20250514',
       max_tokens: 4096,
       system: SYSTEM_PROMPT,
       messages: [{ role: 'user', content: userPrompt }],
@@ -78,7 +77,9 @@ Respond with only the JSON object as specified. No preamble.`
     })
   } catch (error) {
     console.error('[translate] error:', error)
-    const message = error instanceof Error ? error.message : 'Translation failed'
-    return NextResponse.json({ error: message }, { status: 500 })
+    return NextResponse.json(
+      { error: 'We could not translate this right now. Please try again in a moment.' },
+      { status: 500 }
+    )
   }
 }

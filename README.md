@@ -30,7 +30,7 @@ No login required. No data sold. Free to use.
 | Framework | Next.js 15 App Router |
 | Language | TypeScript |
 | Styling | Tailwind CSS v4 + CSS custom properties |
-| AI | Claude API (claude-sonnet-4-20250514) |
+| AI | Claude API (`ANTHROPIC_MODEL`, default `claude-sonnet-5-5`; fallback `claude-haiku-4-5-20251001`) |
 | Database | Supabase (sessions, share URLs) |
 | PDF parsing | pdf-parse |
 | Voice input | Web Speech API (browser-native) |

@@ -77,7 +77,6 @@ ${translation.slice(0, 8000)}
 Check the translation against the original. Identify any critical clinical information that was omitted or meaningfully changed. Return only the JSON object.`
 
     const message = await createMessageWithRetry({
-      model: 'claude-sonnet-4-20250514',
       max_tokens: 1024,
       system: VERIFY_SYSTEM_PROMPT,
       messages: [{ role: 'user', content: userPrompt }],
@@ -104,7 +103,9 @@ Check the translation against the original. Identify any critical clinical infor
     })
   } catch (error) {
     console.error('[verify] error:', error)
-    const message = error instanceof Error ? error.message : 'Verification failed'
-    return NextResponse.json({ error: message }, { status: 500 })
+    return NextResponse.json(
+      { error: 'We could not check this translation right now. Please try again in a moment.' },
+      { status: 500 }
+    )
   }
 }
